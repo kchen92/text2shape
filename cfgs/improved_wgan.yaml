@@ -1,0 +1,7 @@
+CONST:
+    BATCH_SIZE: 8
+    IMPROVED_WGAN: True
+TRAIN:
+    OPTIMIZER: 'adam'
+GAN:
+    D_OPTIMIZER: 'adam'
