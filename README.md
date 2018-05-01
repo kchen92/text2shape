@@ -21,7 +21,7 @@ The following data files can be downloaded from the
 
 Due to the complicated and highly variable nature of the meshes collected in ShapeNet, a select few
 of the models in the ShapeNet dataset result in unexpected voxelizations. We have noted which of
-these models this phenomenon occurs in. If you find any such models, please report them to
+these models this phenomenon occurs in the text2shape data zip. If you find any additional such models, please report them to
 kevin.chen@cs.stanford.edu. Thank you!
 
 **Third Party**
