@@ -6,6 +6,10 @@ Kevin Chen, Christopher Choy, Manolis Savva, Angel Chang, Thomas Funkhouser, Sil
 * [Paper](https://arxiv.org/abs/1803.08495)
 * [Bibtex](http://text2shape.stanford.edu/bibtex.bib)
 
+**Citing**
+
+If you find this code useful in your work, please cite us:
+
 ```
 @article{chen2018text2shape,
   title={Text2Shape: Generating Shapes from Natural Language by Learning Joint Embeddings},
@@ -24,7 +28,7 @@ Kevin Chen, Christopher Choy, Manolis Savva, Angel Chang, Thomas Funkhouser, Sil
 The following data files can be downloaded from the
 [project webpage](http://text2shape.stanford.edu/) and are required for running the code:
 
-* ShapeNet voxelizations
+* [ShapeNet](https://www.shapenet.org/) voxelizations
 * Primitives dataset
 * Additional dataset files located [here](http://text2shape.stanford.edu/dataset/text2shape-data.zip)
 
