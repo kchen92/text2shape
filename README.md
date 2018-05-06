@@ -6,6 +6,15 @@ Kevin Chen, Christopher Choy, Manolis Savva, Angel Chang, Thomas Funkhouser, Sil
 * [Paper](https://arxiv.org/abs/1803.08495)
 * [Bibtex](http://text2shape.stanford.edu/bibtex.bib)
 
+```
+@article{chen2018text2shape,
+  title={Text2Shape: Generating Shapes from Natural Language by Learning Joint Embeddings},
+  author={Chen, Kevin and Choy, Christopher B and Savva, Manolis and Chang, Angel X and Funkhouser, Thomas and Savarese, Silvio},
+  journal={arXiv preprint arXiv:1803.08495},
+  year={2018}
+}
+```
+
 ## Setup
 
 ### Downloads
