@@ -19,6 +19,10 @@ If you find this code useful in your work, please cite us:
 }
 ```
 
+## Data Collection
+
+Code for the turking interface can be found [here](https://github.com/smartscenes/mturk-text2shape).
+
 ## Setup
 
 ### Downloads
