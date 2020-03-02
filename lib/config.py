@@ -42,14 +42,14 @@ __C.VAL_NETWORK = 'Classifier128'
 #
 __C.DIR = edict()
 # Path where taxonomy.json is stored
-__C.DIR.RGB_VOXEL_PATH = '/home/kchen92/Data/text2shape/shapenet/nrrd_256_filter_div_32_solid/%s/%s.nrrd'  # TODO: Modify this
+__C.DIR.RGB_VOXEL_PATH = 'C:\Users\kohei\minerva_ai\text2shape\shapenet\nrrd_256_filter_div_32_solid/%s/%s.nrrd'  # TODO: Modify this
 __C.DIR.LOG_PATH = './output/default'
 __C.DIR.CKPT_PATH = None
 __C.DIR.VAL_CKPT_PATH = None
-__C.DIR.DATA_PATH = '/home/kchen92/Data/text2shape/text2shape-data/'  # TODO: Modify this
+__C.DIR.DATA_PATH = 'C:\Users\kohei\minerva_ai\text2shape\text2shape-data\'  # TODO: Modify this
 
 __C.DIR.SHAPENET_DATA_PATH = os.path.join(__C.DIR.DATA_PATH, 'shapenet')
-__C.DIR.RAW_CAPTION_CSV = '/home/kchen92/Data/text2shape/shapenet/captions.tablechair.csv'  # TODO: Modify this
+__C.DIR.RAW_CAPTION_CSV = 'C:\Users\kohei\minerva_ai\text2shape\shapenet\captions.tablechair.csv'  # TODO: Modify this
 __C.DIR.PROBLEMATIC_NRRD_PATH = os.path.abspath(os.path.join(__C.DIR.SHAPENET_DATA_PATH, 'problematic_nrrds_shapenet_unverified_256_filtered_div_with_err_textures.p'))
 __C.DIR.JSON_PATH = os.path.abspath(os.path.join(__C.DIR.SHAPENET_DATA_PATH, 'shapenet.json'))
 __C.DIR.TRAIN_DATA_PATH = os.path.abspath(os.path.join(__C.DIR.SHAPENET_DATA_PATH, 'processed_captions_train.p'))
@@ -60,7 +60,7 @@ __C.DIR.SHAPENET_METRIC_EMBEDDINGS_VAL = os.path.abspath(os.path.join(__C.DIR.SH
 __C.DIR.SHAPENET_METRIC_EMBEDDINGS_TEST = os.path.abspath(os.path.join(__C.DIR.SHAPENET_DATA_PATH, 'shapenet-embeddings', 'text_embeddings_test.p'))
 
 # Synthetic primitives dataset
-__C.DIR.PRIMITIVES_RGB_VOXEL_PATH = '/home/kchen92/Data/text2shape/primitives/%s/%s'  # TODO: Modify this
+__C.DIR.PRIMITIVES_RGB_VOXEL_PATH = 'C:\Users\kohei\minerva_ai\text2shape\primitives\%s\%s'  # TODO: Modify this
 __C.DIR.PRIMITIVES_DATA_PATH = os.path.join(__C.DIR.DATA_PATH, 'primitives')
 __C.DIR.PRIMITIVES_JSON_PATH = os.path.join(__C.DIR.PRIMITIVES_DATA_PATH, 'primitives.json')
 __C.DIR.PRIMITIVES_TRAIN_DATA_PATH = os.path.abspath(os.path.join(__C.DIR.PRIMITIVES_DATA_PATH, 'processed_captions_train.p'))
@@ -71,7 +71,7 @@ __C.DIR.PRIMITIVES_METRIC_EMBEDDINGS_TRAIN = None
 __C.DIR.PRIMITIVES_METRIC_EMBEDDINGS_VAL = None
 __C.DIR.PRIMITIVES_METRIC_EMBEDDINGS_TEST = None
 
-__C.DIR.TOOLKIT_PATH = '/home/kchen92/Dev/sstk'  # TODO: Modify this
+__C.DIR.TOOLKIT_PATH = 'C:\Users\kohei\minerva_ai\sstk'  # TODO: Modify this
 
 
 # #
