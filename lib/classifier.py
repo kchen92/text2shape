@@ -23,7 +23,7 @@ class Classifier(Network):
         shape_batch_shape = [None] + [cfg.CONST.N_VOX] * 3 + [num_channels]
         shape_placeholder = build_shape_batch(shape_batch_shape, name='shape_placeholder')
 
-        label_placeholder = tf.placeholder(tf.int32, [None], name='label_placeholder')
+        label_placeholder = tf.compat.v1.placeholder(tf.int32, [None], name='label_placeholder')
         self._placeholders = {
             'shape_batch': shape_placeholder,
             'label_batch': label_placeholder,
@@ -42,7 +42,7 @@ class Classifier(Network):
         """
         labels = self.placeholders['label_batch']
         logits = self.outputs['logits']
-        cross_entropy = tf.losses.sparse_softmax_cross_entropy(labels=labels, logits=logits)
+        cross_entropy = tf.compat.v1.losses.sparse_softmax_cross_entropy(labels=labels, logits=logits)
         return {'loss': cross_entropy}
 
     def get_feed_dict(self, minibatch):

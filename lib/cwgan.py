@@ -11,7 +11,7 @@ import lib.placeholders as placeholders
 
 import numpy as np
 import tensorflow as tf
-import tensorflow.contrib.slim as slim
+import tf_slim as slim
 
 
 class CWGAN(Network):
@@ -97,7 +97,7 @@ class CWGAN(Network):
 
         # Build selector placeholder
         if cfg.CONST.IMPROVED_WGAN is True:
-            selector_placeholder = tf.placeholder(tf.float32, [], name='real_fake_selector')
+            selector_placeholder = tf.compat.v1.placeholder(tf.float32, [], name='real_fake_selector')
         else:
             selector_placeholder = None
 
@@ -120,16 +120,16 @@ class CWGAN(Network):
 
     def build_train_ops(self, global_step):
         # Text encoder / generator train op
-        self.g_global_step = tf.get_variable('g_global_step', shape=[], dtype=tf.int64,
-                                             initializer=tf.zeros_initializer(), trainable=False)
-        tf.summary.scalar('g_global_step', self.g_global_step)
-        g_learning_rate = tf.train.exponential_decay(cfg.TRAIN.LEARNING_RATE,
+        self.g_global_step = tf.compat.v1.get_variable('g_global_step', shape=[], dtype=tf.int64,
+                                             initializer=tf.compat.v1.zeros_initializer(), trainable=False)
+        tf.compat.v1.summary.scalar('g_global_step', self.g_global_step)
+        g_learning_rate = tf.compat.v1.train.exponential_decay(cfg.TRAIN.LEARNING_RATE,
                                                      self.g_global_step,
                                                      cfg.TRAIN.DECAY_STEPS,
                                                      cfg.TRAIN.DECAY_RATE,
                                                      staircase=cfg.TRAIN.STAIRCASE,
                                                      name='g_lr_decay')
-        tf.summary.scalar('g_learning_rate', g_learning_rate)
+        tf.compat.v1.summary.scalar('g_learning_rate', g_learning_rate)
 
         g_trainable_vars = self.get_g_trainable_vars()
         print('trainable vars for generator step')
@@ -143,19 +143,19 @@ class CWGAN(Network):
             variables_to_train=g_trainable_vars)
 
         # Create discriminator global step
-        self.d_global_step = tf.get_variable('d_global_step', shape=[], dtype=tf.int64,
-                                             initializer=tf.zeros_initializer(), trainable=False)
-        tf.summary.scalar('d_global_step', self.d_global_step)
+        self.d_global_step = tf.compat.v1.get_variable('d_global_step', shape=[], dtype=tf.int64,
+                                             initializer=tf.compat.v1.zeros_initializer(), trainable=False)
+        tf.compat.v1.summary.scalar('d_global_step', self.d_global_step)
 
         # Critic train op
         d_initial_learning_rate = cfg.TRAIN.LEARNING_RATE * cfg.GAN.D_LEARNING_RATE_MULTIPLIER
-        d_learning_rate = tf.train.exponential_decay(d_initial_learning_rate,
+        d_learning_rate = tf.compat.v1.train.exponential_decay(d_initial_learning_rate,
                                                      self.d_global_step,
                                                      cfg.TRAIN.DECAY_STEPS,
                                                      cfg.TRAIN.DECAY_RATE,
                                                      staircase=cfg.TRAIN.STAIRCASE,
                                                      name='d_lr_decay')
-        tf.summary.scalar('d_learning_rate', d_learning_rate)
+        tf.compat.v1.summary.scalar('d_learning_rate', d_learning_rate)
 
         d_trainable_vars = self.fake_critic.get_trainable_variables()
         print('trainable vars in {}'.format(self.fake_critic.name))
@@ -195,13 +195,13 @@ class CWGAN(Network):
             d_real_mismatch_logits = self.mis_critic.outputs['logits']
 
             # Critic losses
-            d_loss_fake_match = tf.multiply(tf.reduce_mean(d_fake_match_logits),
+            d_loss_fake_match = tf.multiply(tf.reduce_mean(input_tensor=d_fake_match_logits),
                                             float(cfg.WGAN.FAKE_MATCH_LOSS_COEFF),
                                             name='critic_fake_loss')
-            d_loss_real_match = tf.multiply(tf.reduce_mean(tf.negative(d_real_match_logits)),
+            d_loss_real_match = tf.multiply(tf.reduce_mean(input_tensor=tf.negative(d_real_match_logits)),
                                             float(cfg.WGAN.MATCH_LOSS_COEFF),
                                             name='critic_match_loss')
-            d_loss_real_mismatch = tf.multiply(tf.reduce_mean(d_real_mismatch_logits),
+            d_loss_real_mismatch = tf.multiply(tf.reduce_mean(input_tensor=d_real_mismatch_logits),
                                                float(cfg.WGAN.FAKE_MISMATCH_LOSS_COEFF),
                                                name='critic_mismatch_loss')
 
@@ -209,18 +209,18 @@ class CWGAN(Network):
             if cfg.CONST.IMPROVED_WGAN is True:
 
                 gradients_dtext, gradients_dshape = tf.gradients(
-                    self.gp_critic.outputs['logits'],
-                    [self.gp_text_data,
+                    ys=self.gp_critic.outputs['logits'],
+                    xs=[self.gp_text_data,
                      self.gp_shape_data])
                 gradients_dshape_reshaped = tf.reshape(gradients_dshape, [cfg.CONST.BATCH_SIZE, -1])
 
-                slopes_text = tf.sqrt(tf.reduce_sum(tf.square(gradients_dtext),
-                                                    reduction_indices=[1]))
-                slopes_shape = tf.sqrt(tf.reduce_sum(tf.square(gradients_dshape_reshaped),
-                                                     reduction_indices=[1]))
+                slopes_text = tf.sqrt(tf.reduce_sum(input_tensor=tf.square(gradients_dtext),
+                                                    axis=[1]))
+                slopes_shape = tf.sqrt(tf.reduce_sum(input_tensor=tf.square(gradients_dshape_reshaped),
+                                                     axis=[1]))
 
-                gp_text = tf.reduce_mean((slopes_text - 1.)**2, name='critic_gp_text')
-                gp_shape = tf.reduce_mean((slopes_shape - 1.)**2, name='critic_gp_shape')
+                gp_text = tf.reduce_mean(input_tensor=(slopes_text - 1.)**2, name='critic_gp_text')
+                gp_shape = tf.reduce_mean(input_tensor=(slopes_shape - 1.)**2, name='critic_gp_shape')
 
                 gradient_penalty = tf.add(gp_text, gp_shape, name='gradient_penalty_add')
                 d_loss_gp = tf.multiply(float(cfg.WGAN.GP_COEFF), gradient_penalty,
@@ -235,7 +235,7 @@ class CWGAN(Network):
                                    name='critic_loss')
 
             # Text encoder / generator loss
-            g_loss = tf.reduce_mean(tf.negative(d_fake_match_logits), name='generator_fake_match')
+            g_loss = tf.reduce_mean(input_tensor=tf.negative(d_fake_match_logits), name='generator_fake_match')
 
             return {'critic_fake': d_loss_fake_match,
                     'critic_match': d_loss_real_match,
@@ -342,7 +342,7 @@ class CWGAN(Network):
         """
         print('building network:', self.name)
 
-        with tf.variable_scope(self.name, reuse=self.reuse):
+        with tf.compat.v1.variable_scope(self.name, reuse=self.reuse):
             self.build_placeholders()
             self.preprocess_inputs()
             gan_inputs_dict = self.build_gan_inputs_dict()
@@ -467,7 +467,7 @@ class CWGAN(Network):
         # Compute number of critic train iterations for the current train step
         if (cfg.CONST.IMPROVED_WGAN is False) and ((step < cfg.WGAN.INTENSE_TRAINING_STEPS)
                                                    or (step % cfg.WGAN.INTENSE_TRAINING_FREQ == 0)):
-            tf.logging.info(
+            tf.compat.v1.logging.info(
                 'Training critic for {} steps.'.format(cfg.WGAN.INTENSE_TRAINING_INTENSITY))
             num_critic_steps = cfg.WGAN.INTENSE_TRAINING_INTENSITY
         else:

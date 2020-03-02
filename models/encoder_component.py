@@ -4,7 +4,7 @@ from lib.utils import compute_sequence_length, extract_last_output, open_pickle
 import lib.layers as layers
 
 import tensorflow as tf
-import tensorflow.contrib.slim as slim
+import tf_slim as slim
 
 
 class CNNRNNTextEncoder(TextEncoderNetComponent):
@@ -31,21 +31,21 @@ class CNNRNNTextEncoder(TextEncoderNetComponent):
         # Build convolutions
         with slim.arg_scope([slim.convolution, slim.fully_connected],
                             activation_fn=tf.nn.relu,
-                            weights_regularizer=slim.l2_regularizer(0.0005)):
+                            weights_regularizer=tf.keras.regularizers.l2(0.5 * (0.0005))):
 
             net = slim.convolution(embedding, 128, 3, scope='conv1')
             net = slim.convolution(net, 128, 3, scope='conv2')
-            net = tf.layers.batch_normalization(net, training=self.is_training)
+            net = tf.compat.v1.layers.batch_normalization(net, training=self.is_training)
             # net = slim.pool(net, 2, 'MAX')  # change the sequence length
             net = slim.convolution(net, 256, 3, scope='conv3')
             net = slim.convolution(net, 256, 3, scope='conv4')
-            net = tf.layers.batch_normalization(net, training=self.is_training)
+            net = tf.compat.v1.layers.batch_normalization(net, training=self.is_training)
             # net = slim.pool(net, 2, 'MAX')
 
-            rnn_cell = tf.contrib.rnn.GRUCell(num_units=256)
+            rnn_cell = tf.compat.v1.nn.rnn_cell.GRUCell(num_units=256)
             # initial_state = rnn_cell.zero_state(self._batch_size, tf.float32)
 
-            outputs, final_state = tf.nn.dynamic_rnn(cell=rnn_cell,
+            outputs, final_state = tf.compat.v1.nn.dynamic_rnn(cell=rnn_cell,
                                                      inputs=net,
                                                      sequence_length=seq_length,
                                                      dtype=tf.float32,
@@ -83,15 +83,15 @@ class ShapeEncoder(NetComponent):
             raise ValueError('Please select a valid dataset')
 
         x = layers.conv3d(x, 64, 3, strides=2, padding='same', name='conv1', reuse=self.reuse)
-        x = tf.layers.batch_normalization(x, training=self.is_training, name='conv1_batch_norm',
+        x = tf.compat.v1.layers.batch_normalization(x, training=self.is_training, name='conv1_batch_norm',
                                           reuse=self.reuse)
         x = layers.relu(x, name='conv1_relu')
         x = layers.conv3d(x, 128, 3, strides=2, padding='same', name='conv2', reuse=self.reuse)
-        x = tf.layers.batch_normalization(x, training=self.is_training, name='conv2_batch_norm',
+        x = tf.compat.v1.layers.batch_normalization(x, training=self.is_training, name='conv2_batch_norm',
                                           reuse=self.reuse)
         x = layers.relu(x, name='conv2_relu')
         x = layers.conv3d(x, 256, 3, strides=2, padding='same', name='conv3', reuse=self.reuse)
-        x = tf.layers.batch_normalization(x, training=self.is_training, name='conv3_batch_norm',
+        x = tf.compat.v1.layers.batch_normalization(x, training=self.is_training, name='conv3_batch_norm',
                                           reuse=self.reuse)
         x = layers.relu(x, name='conv3_relu')
         x = layers.avg_pooling3d(x, name='avg_pool4')

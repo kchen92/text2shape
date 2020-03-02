@@ -11,7 +11,7 @@ class Text2ShapeGenerator1(NetComponent):
         super(Text2ShapeGenerator1, self).__init__(is_training, reuse=reuse, name=name)
 
     def build_architecture(self, inputs_dict, last_activation=tf.sigmoid):
-        with tf.variable_scope('architecture'):
+        with tf.compat.v1.variable_scope('architecture'):
             x = inputs_dict['text_encoding_with_noise']
             print('\t\tinput', x.get_shape())
 
@@ -23,7 +23,7 @@ class Text2ShapeGenerator1(NetComponent):
                 name='fc1',
                 reuse=self.reuse
             )
-            x = tf.layers.batch_normalization(
+            x = tf.compat.v1.layers.batch_normalization(
                 x,
                 training=self.is_training,
                 name='fc1_batch_norm',
@@ -42,7 +42,7 @@ class Text2ShapeGenerator1(NetComponent):
                 scope='conv_transpose2',
                 reuse=self.reuse
             )
-            x = tf.layers.batch_normalization(
+            x = tf.compat.v1.layers.batch_normalization(
                 x,
                 training=self.is_training,
                 name='conv_tranpose2_batch_norm',
@@ -60,7 +60,7 @@ class Text2ShapeGenerator1(NetComponent):
                 scope='conv_transpose3',
                 reuse=self.reuse
             )
-            x = tf.layers.batch_normalization(
+            x = tf.compat.v1.layers.batch_normalization(
                 x,
                 training=self.is_training,
                 name='conv_tranpose3_batch_norm',
@@ -78,7 +78,7 @@ class Text2ShapeGenerator1(NetComponent):
                 scope='conv_transpose4',
                 reuse=self.reuse
             )
-            x = tf.layers.batch_normalization(x, training=self.is_training, name='conv_transpose4_batch_norm',
+            x = tf.compat.v1.layers.batch_normalization(x, training=self.is_training, name='conv_transpose4_batch_norm',
                                               reuse=self.reuse)
             x = layers.relu(x, name='conv_transpose4_relu')
 

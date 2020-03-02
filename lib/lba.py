@@ -7,7 +7,7 @@ import lib.losses as losses
 
 import numpy as np
 import tensorflow as tf
-import tensorflow.contrib.slim as slim
+import tf_slim as slim
 
 
 class LBA(Network):
@@ -52,13 +52,13 @@ class LBA(Network):
         ]
         shape_batch = placeholders.build_shape_batch(shape_batch_shape, 'shape_batch')
 
-        caption_labels = tf.placeholder(
+        caption_labels = tf.compat.v1.placeholder(
             tf.int32,
             shape=[n_captions],
             name='caption_label_batch',
         )
 
-        shape_labels = tf.placeholder(
+        shape_labels = tf.compat.v1.placeholder(
             tf.int32,
             shape=[cfg.CONST.BATCH_SIZE],
             name='shape_label_batch',
@@ -95,7 +95,7 @@ class LBA(Network):
             orig_text_encoder_output = self.text_encoder.outputs['encoder_output']
             self.text_encoder.outputs['encoder_output'] = tf.nn.l2_normalize(
                 orig_text_encoder_output,
-                dim=1,
+                axis=1,
                 name='normalize_text_encoding',
             )
 
@@ -103,7 +103,7 @@ class LBA(Network):
             orig_shape_encoder_output = self.shape_encoder.outputs['encoder_output']
             self.shape_encoder.outputs['encoder_output'] = tf.nn.l2_normalize(
                 orig_shape_encoder_output,
-                dim=1,
+                axis=1,
                 name='normalize_shape_encoding',
             )
 
@@ -176,7 +176,7 @@ class LBA(Network):
             if cfg.LBA.CLASSIFICATION is True:
                 labels = self.placeholders['shape_label_batch']
                 logits = self.outputs['shape_encoder']['logits']
-                cross_entropy = tf.losses.sparse_softmax_cross_entropy(labels=labels, logits=logits)
+                cross_entropy = tf.compat.v1.losses.sparse_softmax_cross_entropy(labels=labels, logits=logits)
                 lba_losses['classification_loss'] = cfg.LBA.CLASSIFICATION_MULTIPLIER * cross_entropy
             else:
                 lba_losses['classification_loss'] = tf.zeros([])
@@ -232,10 +232,10 @@ class LBA(Network):
             lba_losses['metric_st'] = 2. * cfg.LBA.METRIC_MULTIPLIER * metric_st
 
             if cfg.LBA.NORMALIZE is False:  # Add a penalty on the embedding norms
-                text_norms = tf.norm(text_embeddings, axis=1, name='text_norm')
-                unweighted_txt_loss = tf.reduce_mean(tf.maximum(0., text_norms - cfg.LBA.MAX_NORM))
-                shape_norms = tf.norm(shape_embeddings, axis=1, name='shape_norm')
-                unweighted_shape_loss = tf.reduce_mean(tf.maximum(0., shape_norms - cfg.LBA.MAX_NORM))
+                text_norms = tf.norm(tensor=text_embeddings, axis=1, name='text_norm')
+                unweighted_txt_loss = tf.reduce_mean(input_tensor=tf.maximum(0., text_norms - cfg.LBA.MAX_NORM))
+                shape_norms = tf.norm(tensor=shape_embeddings, axis=1, name='shape_norm')
+                unweighted_shape_loss = tf.reduce_mean(input_tensor=tf.maximum(0., shape_norms - cfg.LBA.MAX_NORM))
                 lba_losses['weighted_text_norm'] = cfg.LBA.TEXT_NORM_MULTIPLIER * unweighted_txt_loss
                 lba_losses['weighted_shape_norm'] = cfg.LBA.SHAPE_NORM_MULTIPLIER * unweighted_shape_loss
         return lba_losses

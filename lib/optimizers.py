@@ -2,15 +2,15 @@ import tensorflow as tf
 
 
 def adam_optimizer(learning_rate, name=None):
-    return tf.train.AdamOptimizer(learning_rate, beta1=0.5, name=name)
+    return tf.compat.v1.train.AdamOptimizer(learning_rate, beta1=0.5, name=name)
 
 
 def adam_optimizer_iwgan(learning_rate, name=None):
-    return tf.train.AdamOptimizer(learning_rate, beta1=0.5, beta2=0.9, name=name)
+    return tf.compat.v1.train.AdamOptimizer(learning_rate, beta1=0.5, beta2=0.9, name=name)
 
 
 def rms_prop_optimizer(learning_rate, name=None):
-    return tf.train.RMSPropOptimizer(learning_rate, name=name)
+    return tf.compat.v1.train.RMSPropOptimizer(learning_rate, name=name)
 
 
 OPTIMIZER_PAIRS = {

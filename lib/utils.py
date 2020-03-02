@@ -28,7 +28,7 @@ def get_trainable_variables_by_scope(scope):
     Returns
         scope_vars: A list of trainable variables in the scope.
     """
-    trainable_vars = tf.trainable_variables()
+    trainable_vars = tf.compat.v1.trainable_variables()
     if scope[-1] != '/':
         sc = scope + '/'
     else:
@@ -132,7 +132,7 @@ def print_train_step_data(data_dict, step):
     print('----------- train step %06d ---------------' % (step + 1))
     for key, val in data_dict.items():
         print_str = '{}\t{}: {}'.format(str(datetime.now()), key, val)
-        tf.logging.info(print_str)
+        tf.compat.v1.logging.info(print_str)
 
 
 def compute_sequence_length(input_batch):
@@ -150,9 +150,9 @@ def compute_sequence_length(input_batch):
     """
     # used represents a BxC tensor where (i, j) element is 1 if the jth
     # word of the ith sample (in the batch) is used/present
-    with tf.variable_scope('seq_len'):
+    with tf.compat.v1.variable_scope('seq_len'):
         used = tf.greater(input_batch, 0)
-        seq_length = tf.reduce_sum(tf.cast(used, tf.int32), reduction_indices=1)
+        seq_length = tf.reduce_sum(input_tensor=tf.cast(used, tf.int32), axis=1)
         seq_length = tf.cast(seq_length, tf.int32)
 
     return seq_length
@@ -365,8 +365,8 @@ def debug_validation_stuff(save_vars, p_name):
 
 
 def extract_last_output(output, seq_length):
-        batch_size = tf.shape(output)[0]
-        max_length = tf.shape(output)[1]
+        batch_size = tf.shape(input=output)[0]
+        max_length = tf.shape(input=output)[1]
         out_size = int(output.get_shape()[2])
 
         index = tf.range(0, batch_size) * max_length + (seq_length - 1)

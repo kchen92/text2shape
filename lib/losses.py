@@ -2,7 +2,7 @@
 """
 import numpy as np
 import tensorflow as tf
-import tensorflow.contrib.slim as slim
+import tf_slim as slim
 
 from lib.config import cfg
 
@@ -19,10 +19,10 @@ def build_walk_statistics(p_aba, equality_matrix):
     """
     # Using the square root of the correct round trip probalilty as an estimate
     # of the current classifier accuracy.
-    per_row_accuracy = 1.0 - tf.reduce_sum((equality_matrix * p_aba), 1)**0.5
-    estimate_error = tf.reduce_mean(1.0 - per_row_accuracy, name=p_aba.name[:-2] + '_esterr')
+    per_row_accuracy = 1.0 - tf.reduce_sum(input_tensor=(equality_matrix * p_aba), axis=1)**0.5
+    estimate_error = tf.reduce_mean(input_tensor=1.0 - per_row_accuracy, name=p_aba.name[:-2] + '_esterr')
 
-    tf.summary.scalar('Stats_EstError', estimate_error)
+    tf.compat.v1.summary.scalar('Stats_EstError', estimate_error)
 
 
 def build_visit_loss(p, weight=1.0):
@@ -33,15 +33,15 @@ def build_visit_loss(p, weight=1.0):
             (i.e. sum to 1.0)
         weight: Loss weight.
     """
-    visit_probability = tf.reduce_mean(p, [0], keep_dims=True, name='visit_prob')
-    t_nb = tf.shape(p)[1]
-    visit_loss = tf.losses.softmax_cross_entropy(
+    visit_probability = tf.reduce_mean(input_tensor=p, axis=[0], keepdims=True, name='visit_prob')
+    t_nb = tf.shape(input=p)[1]
+    visit_loss = tf.compat.v1.losses.softmax_cross_entropy(
         tf.fill([1, t_nb], 1.0 / tf.cast(t_nb, tf.float32)),
-        tf.log(1e-8 + visit_probability),
+        tf.math.log(1e-8 + visit_probability),
         weights=weight,
         scope='loss_visit')
 
-    tf.summary.scalar('Loss_Visit', visit_loss)
+    tf.compat.v1.summary.scalar('Loss_Visit', visit_loss)
     return visit_loss
 
 
@@ -58,19 +58,19 @@ def compute_matching_mahalanobis(a, b, a_center=None, b_center=None, A=None):
     if a_center is None:
         a_dim = a.get_shape().as_list()[1]
         a_center = slim.model_variable('a_center', shape=[1, a_dim],
-                                       initializer=tf.zeros_initializer())
+                                       initializer=tf.compat.v1.zeros_initializer())
     if b_center is None:
         b_dim = b.get_shape().as_list()[1]
         b_center = slim.model_variable('b_center', shape=[1, b_dim],
-                                       initializer=tf.zeros_initializer())
+                                       initializer=tf.compat.v1.zeros_initializer())
     if A is None:
         A_shape = [a_dim, b_dim]
         assert A_shape[0] == A_shape[1]
         A_init_val = 0.2 * np.random.rand(A_shape[0], A_shape[1]) + np.eye(A_shape[0])
-        A_initializer = tf.constant_initializer(A_init_val)
+        A_initializer = tf.compat.v1.constant_initializer(A_init_val)
         A = slim.model_variable('A', shape=A_shape, initializer=A_initializer)
 
-    M = (A + tf.transpose(A)) / 2.
+    M = (A + tf.transpose(a=A)) / 2.
     centered_a = a - a_center
     centered_b = b - b_center
     match_ab = tf.matmul(tf.matmul(centered_a, M), centered_b, transpose_b=True, name='match_ab')
@@ -98,7 +98,7 @@ def build_semisup_loss(a, b, labels, walker_weight=1.0, visit_weight=1.0, a_cent
     # Build target probability distribution matrix based on uniform dist over correct labels
     equality_matrix = tf.equal(tf.reshape(labels, [-1, 1]), labels)
     equality_matrix = tf.cast(equality_matrix, tf.float32)
-    p_target = (equality_matrix / tf.reduce_sum(equality_matrix, [1], keep_dims=True))
+    p_target = (equality_matrix / tf.reduce_sum(input_tensor=equality_matrix, axis=[1], keepdims=True))
 
     if cfg.LBA.DIST_TYPE == 'standard':
         match_ab, A, M, a_center, b_center = compute_matching_standard(a, b)
@@ -108,19 +108,19 @@ def build_semisup_loss(a, b, labels, walker_weight=1.0, visit_weight=1.0, a_cent
     else:
         return ValueError('Please use a valid LBA.DIST_TYPE')
     p_ab = tf.nn.softmax(match_ab, name='p_ab')
-    p_ba = tf.nn.softmax(tf.transpose(match_ab), name='p_ba')
+    p_ba = tf.nn.softmax(tf.transpose(a=match_ab), name='p_ba')
     p_aba = tf.matmul(p_ab, p_ba, name='p_aba')
 
     build_walk_statistics(p_aba, equality_matrix)
 
-    loss_aba = tf.losses.softmax_cross_entropy(
+    loss_aba = tf.compat.v1.losses.softmax_cross_entropy(
         p_target,
-        tf.log(1e-8 + p_aba),
+        tf.math.log(1e-8 + p_aba),
         weights=walker_weight,
         scope='loss_aba')
     visit_loss = build_visit_loss(p_ab, visit_weight)
 
-    tf.summary.scalar('Loss_aba', loss_aba)
+    tf.compat.v1.summary.scalar('Loss_aba', loss_aba)
 
     losses = {
         'walker_loss': loss_aba,
@@ -130,11 +130,11 @@ def build_semisup_loss(a, b, labels, walker_weight=1.0, visit_weight=1.0, a_cent
 
 
 def enforce_psd(A, M):
-    e, v = tf.self_adjoint_eig(M)
+    e, v = tf.linalg.eigh(M)
     non_negative_e = tf.maximum(e, 0.)
-    psd_M = tf.matmul(tf.matmul(v, tf.diag(non_negative_e)), tf.matrix_inverse(v))
+    psd_M = tf.matmul(tf.matmul(v, tf.linalg.tensor_diag(non_negative_e)), tf.linalg.inv(v))
     new_A = psd_M / 2
-    assign_op = tf.assign(A, new_A)
+    assign_op = tf.compat.v1.assign(A, new_A)
     return assign_op
 
 
@@ -154,7 +154,7 @@ def build_lba_loss(text_encoder, shape_encoder, labels):
     if (cfg.LBA.MODEL_TYPE == 'MM') or (cfg.LBA.MODEL_TYPE == 'TST'):
         a = text_encoder.outputs['encoder_output']
         b = shape_encoder.outputs['encoder_output']
-        with tf.variable_scope('tst_loss'):
+        with tf.compat.v1.variable_scope('tst_loss'):
             tst_loss, p_aba, p_target, A, M, a_center, b_center = build_semisup_loss(
                     a, b, labels,
                     walker_weight=cfg.LBA.WALKER_WEIGHT,
@@ -167,10 +167,10 @@ def build_lba_loss(text_encoder, shape_encoder, labels):
         a = shape_encoder.outputs['encoder_output']
         labels = np.array(range(cfg.CONST.BATCH_SIZE))
         if A is not None:
-            A_transpose = tf.transpose(A)
+            A_transpose = tf.transpose(a=A)
         else:
             A_transpose = None
-        with tf.variable_scope('sts_loss'):
+        with tf.compat.v1.variable_scope('sts_loss'):
             sts_loss, p_aba, p_target, A, M, _, _ = build_semisup_loss(
                     a, b, labels,
                     walker_weight=cfg.LBA.WALKER_WEIGHT,

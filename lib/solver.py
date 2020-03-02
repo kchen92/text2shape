@@ -1,7 +1,7 @@
 import numpy as np
 import os
 import tensorflow as tf
-import tensorflow.contrib.slim as slim
+import tf_slim as slim
 
 from datetime import datetime
 
@@ -32,13 +32,13 @@ class Solver(object):
             self.net.build_train_ops(self.global_step)
 
         if isinstance(net, Classifier):
-            self.saver = tf.train.Saver(var_list=net.vars_to_restore, name='saver')
+            self.saver = tf.compat.v1.train.Saver(var_list=net.vars_to_restore, name='saver')
         else:
-            self.saver = tf.train.Saver(max_to_keep=None, name='saver_all_var')  # Save all vars
+            self.saver = tf.compat.v1.train.Saver(max_to_keep=None, name='saver_all_var')  # Save all vars
         self.init_ops = self.build_init_ops()
-        self.val_loss_ph = tf.placeholder(tf.float32, shape=(), name='val_loss_ph')
+        self.val_loss_ph = tf.compat.v1.placeholder(tf.float32, shape=(), name='val_loss_ph')
         self.net.build_summary_ops(self.graph)
-        self.val_loss_summary = tf.summary.scalar(name='val_loss', tensor=self.val_loss_ph)
+        self.val_loss_summary = tf.compat.v1.summary.scalar(name='val_loss', tensor=self.val_loss_ph)
 
         print('saver variables:')
         print_tensor_shapes(net.vars_to_restore, prefix='-->')
@@ -51,11 +51,11 @@ class Solver(object):
             ready_op: Initialization op.
             local_init_op: Initialization op.
         """
-        with tf.name_scope('init_ops'):
-            init_op = tf.global_variables_initializer()
-            ready_op = tf.report_uninitialized_variables()
-            local_init_op = tf.group(tf.local_variables_initializer(),
-                                     tf.tables_initializer())
+        with tf.compat.v1.name_scope('init_ops'):
+            init_op = tf.compat.v1.global_variables_initializer()
+            ready_op = tf.compat.v1.report_uninitialized_variables()
+            local_init_op = tf.group(tf.compat.v1.local_variables_initializer(),
+                                     tf.compat.v1.tables_initializer())
         return init_op, ready_op, local_init_op
 
     def restore_checkpoint(self, sess):
@@ -66,10 +66,10 @@ class Solver(object):
             sess: Current session.
         """
         if cfg.DIR.CKPT_PATH is not None:
-            tf.logging.info('Restoring checkpoint.')
+            tf.compat.v1.logging.info('Restoring checkpoint.')
             self.saver.restore(sess, cfg.DIR.CKPT_PATH)
         else:
-            tf.logging.info('Using network with random weights.')
+            tf.compat.v1.logging.info('Using network with random weights.')
 
     def train_step(self, sess, train_queue, step):
         """Executes a train step, including saving the summaries if appropriate.
@@ -126,7 +126,7 @@ class Solver(object):
         if val_iters_per_epoch is not None:
             num_val_iter = min(num_val_iter, val_iters_per_epoch)
 
-        with tf.Session() as sess:
+        with tf.compat.v1.Session() as sess:
             sess.run(self.init_ops)
             self.restore_checkpoint(sess)
 
@@ -154,7 +154,7 @@ class Solver(object):
                 if (run_validation is True) and ((step + 1) % cfg.TRAIN.VALIDATION_FREQ == 0):
                     validation_val = self.validate(sess, val_queue, step, num_val_iter)
                     if validation_val == -1:  # Training termination flag
-                        tf.logging.info(
+                        tf.compat.v1.logging.info(
                                 'Terminating train loop due to decreasing validation performance.')
                         break
                     else:
@@ -195,7 +195,7 @@ class Solver(object):
             outputs_list.append(outputs)
 
             if (step + 1) % 100 == 0:
-                tf.logging.info('%s  Step: %d' % (str(datetime.now()), step + 1))
+                tf.compat.v1.logging.info('%s  Step: %d' % (str(datetime.now()), step + 1))
 
         return minibatch_list, outputs_list
 
@@ -222,7 +222,7 @@ class Solver(object):
             num_minibatches: Number of minibatches to compute the outputs for.
             save_outputs: Boolean flag for whether or not to save the outputs.
         """
-        with tf.Session() as sess:
+        with tf.compat.v1.Session() as sess:
             if cfg.DIR.CKPT_PATH is None:
                 raise ValueError('Please provide a checkpoint.')
                 sess.run(self.init_ops)
@@ -246,7 +246,7 @@ class Solver(object):
         """Save a checkpoint.
         """
         ckpt_path = os.path.join(cfg.DIR.LOG_PATH, 'model.ckpt')
-        tf.logging.info('Saving checkpoint (step %d).', (step + 1))
+        tf.compat.v1.logging.info('Saving checkpoint (step %d).', (step + 1))
         self.saver.save(sess, ckpt_path, global_step=(step + 1))
 
     def save_outputs(self, minibatch_list, outputs_list, filename=None):

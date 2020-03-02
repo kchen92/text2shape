@@ -2,7 +2,7 @@ from lib.config import cfg
 from lib.utils import print_tensor_shapes, compute_sequence_length, get_trainable_variables_by_scope
 
 import tensorflow as tf
-import tensorflow.contrib.slim as slim
+import tf_slim as slim
 
 
 class NetComponent(object):
@@ -52,15 +52,15 @@ class NetComponent(object):
             if isinstance(self._outputs, dict):
                 for k, v in self._outputs.items():
                     if isinstance(v, tf.Tensor):
-                        tf.summary.histogram(k + '_hist_summary', v)
+                        tf.compat.v1.summary.histogram(k + '_hist_summary', v)
 
         if self._no_scope is True:
             _build_model()
-            cur_variable_scope = tf.get_variable_scope()
+            cur_variable_scope = tf.compat.v1.get_variable_scope()
             self._vars_to_restore = slim.get_variables_to_restore(include=[cur_variable_scope])
             self._trainable_vars = get_trainable_variables_by_scope(cur_variable_scope.name)
         else:
-            with tf.variable_scope(self.name, reuse=self.reuse) as sc:
+            with tf.compat.v1.variable_scope(self.name, reuse=self.reuse) as sc:
                 _build_model()
                 self._vars_to_restore = slim.get_variables_to_restore(include=[sc.name])
 
@@ -97,12 +97,12 @@ class TextEncoderNetComponent(NetComponent):
         input_batch = caption_batch
 
         print('--> building embedding layer')
-        with tf.variable_scope('embedding_layer', reuse=self.reuse):
+        with tf.compat.v1.variable_scope('embedding_layer', reuse=self.reuse):
             embeddings = tf.Variable(
-                tf.random_uniform([vocab_size, self.embedding_size], -1.0, 1.0),
+                tf.random.uniform([vocab_size, self.embedding_size], -1.0, 1.0),
                 name='embedding_matrix')
-            embedding_batch = tf.nn.embedding_lookup(embeddings,
-                                                     input_batch,
+            embedding_batch = tf.nn.embedding_lookup(params=embeddings,
+                                                     ids=input_batch,
                                                      name='input_embedding_batch')
 
             # print shapes
@@ -117,7 +117,7 @@ class TextEncoderNetComponent(NetComponent):
         """
         print('building network:', self.name)
 
-        with tf.variable_scope(self.name, reuse=self.reuse) as sc:
+        with tf.compat.v1.variable_scope(self.name, reuse=self.reuse) as sc:
             processed_inputs = self.preprocess_inputs(inputs_dict)
             arch_inputs_dict = {**inputs_dict, **processed_inputs}  # Combine dicts
             self._outputs = self.build_architecture(arch_inputs_dict)
@@ -126,7 +126,7 @@ class TextEncoderNetComponent(NetComponent):
             if isinstance(self._outputs, dict):
                 for k, v in self._outputs.items():
                     if isinstance(v, tf.Tensor):
-                        tf.summary.histogram(k + '_hist_summary', v)
+                        tf.compat.v1.summary.histogram(k + '_hist_summary', v)
 
             self._vars_to_restore = slim.get_variables_to_restore(include=[sc.name])
 
@@ -165,7 +165,7 @@ class LBANetComponent(NetComponent):
             orig_text_encoder_output = self.text_encoder.outputs['encoder_output']
             self.text_encoder.outputs['encoder_output'] = tf.nn.l2_normalize(
                 orig_text_encoder_output,
-                dim=1,
+                axis=1,
                 name='normalize_text_encoding',
             )
 
@@ -173,7 +173,7 @@ class LBANetComponent(NetComponent):
             orig_shape_encoder_output = self.shape_encoder.outputs['encoder_output']
             self.shape_encoder.outputs['encoder_output'] = tf.nn.l2_normalize(
                 orig_shape_encoder_output,
-                dim=1,
+                axis=1,
                 name='normalize_shape_encoding',
             )
 

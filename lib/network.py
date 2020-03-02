@@ -3,17 +3,17 @@ from lib.optimizers import get_optimizer
 from lib.utils import get_trainable_variables_by_scope, print_tensor_shapes
 
 import tensorflow as tf
-import tensorflow.contrib.slim as slim
+import tf_slim as slim
 
 
 def build_default_train_op(global_step, loss, trainable_vars):
-    learning_rate = tf.train.exponential_decay(cfg.TRAIN.LEARNING_RATE,
+    learning_rate = tf.compat.v1.train.exponential_decay(cfg.TRAIN.LEARNING_RATE,
                                                global_step,
                                                cfg.TRAIN.DECAY_STEPS,
                                                cfg.TRAIN.DECAY_RATE,
                                                staircase=cfg.TRAIN.STAIRCASE,
                                                name='lr_decay')
-    tf.summary.scalar('learning_rate', learning_rate)
+    tf.compat.v1.summary.scalar('learning_rate', learning_rate)
 
     optimizer = get_optimizer(cfg.TRAIN.OPTIMIZER, learning_rate, name='optimizer')
     train_op = slim.learning.create_train_op(
@@ -60,11 +60,11 @@ class Network(object):
             for loss in self.losses.values():
                 if isinstance(loss, dict):
                     for x in loss.values():
-                        tf.losses.add_loss(x)
+                        tf.compat.v1.losses.add_loss(x)
                 else:
-                    tf.losses.add_loss(loss)
+                    tf.compat.v1.losses.add_loss(loss)
             if self.total_loss is not None:
-                tf.summary.scalar('total_loss', self.total_loss)
+                tf.compat.v1.summary.scalar('total_loss', self.total_loss)
 
     def build_placeholders(self):
         """Build the placeholders.
@@ -86,7 +86,7 @@ class Network(object):
         """
         print('building network:', self.name)
 
-        with tf.variable_scope(self.name, reuse=self.reuse) as sc:
+        with tf.compat.v1.variable_scope(self.name, reuse=self.reuse) as sc:
             self.build_placeholders()
             self.preprocess_inputs()
             self._outputs = self.build_architecture()
@@ -95,7 +95,7 @@ class Network(object):
             if isinstance(self._outputs, dict):
                 for k, v in self._outputs.items():
                     if isinstance(v, tf.Tensor):
-                        tf.summary.histogram(k + '_hist_summary', v)
+                        tf.compat.v1.summary.histogram(k + '_hist_summary', v)
 
             print('--> building loss')
             self._losses = self.build_loss()
@@ -135,15 +135,15 @@ class Network(object):
         Args:
             losses: Dictionary of losses, similar to the output of self.build_loss().
         """
-        with tf.variable_scope(self.name):
+        with tf.compat.v1.variable_scope(self.name):
             self._losses = losses
             self._total_loss = tf.add_n(list(self._losses.values()), name='total_loss')
 
-            tf.summary.scalar('total_loss', self.total_loss)
+            tf.compat.v1.summary.scalar('total_loss', self.total_loss)
 
         # Add losses to losses collection
         for loss in self.losses.values():
-            tf.losses.add_loss(loss)
+            tf.compat.v1.losses.add_loss(loss)
 
     def build_summary_ops(self, graph):
         """Build summary ops. Add summaries for variables, weights, biases, activations, and losses.
@@ -157,11 +157,11 @@ class Network(object):
         slim.summarize_weights()
         slim.summarize_biases()
         slim.summarize_activations()
-        slim.summarize_collection(tf.GraphKeys.LOSSES)
+        slim.summarize_collection(tf.compat.v1.GraphKeys.LOSSES)
 
-        with tf.name_scope('summary_ops'):
-            summary_op = tf.summary.merge_all()
-            summary_writer = tf.summary.FileWriter(cfg.DIR.LOG_PATH, graph=graph)
+        with tf.compat.v1.name_scope('summary_ops'):
+            summary_op = tf.compat.v1.summary.merge_all()
+            summary_writer = tf.compat.v1.summary.FileWriter(cfg.DIR.LOG_PATH, graph=graph)
         self.summary_op = summary_op
         self.summary_writer = summary_writer
 

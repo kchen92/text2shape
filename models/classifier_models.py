@@ -14,15 +14,15 @@ class Classifier1(Classifier):
         x = self.placeholders['shape_batch']
 
         x = layers.conv3d(x, 64, 3, strides=2, padding='same', name='conv1', reuse=self.reuse)
-        x = tf.layers.batch_normalization(x, training=self.is_training, name='conv1_batch_norm',
+        x = tf.compat.v1.layers.batch_normalization(x, training=self.is_training, name='conv1_batch_norm',
                                           reuse=self.reuse)
         x = layers.relu(x, name='conv1_relu')
         x = layers.conv3d(x, 128, 3, strides=2, padding='same', name='conv2', reuse=self.reuse)
-        x = tf.layers.batch_normalization(x, training=self.is_training, name='conv2_batch_norm',
+        x = tf.compat.v1.layers.batch_normalization(x, training=self.is_training, name='conv2_batch_norm',
                                           reuse=self.reuse)
         x = layers.relu(x, name='conv2_relu')
         x = layers.conv3d(x, 256, 3, strides=2, padding='same', name='conv3', reuse=self.reuse)
-        x = tf.layers.batch_normalization(x, training=self.is_training, name='conv3_batch_norm',
+        x = tf.compat.v1.layers.batch_normalization(x, training=self.is_training, name='conv3_batch_norm',
                                           reuse=self.reuse)
         x = layers.relu(x, name='conv3_relu')
         x = layers.avg_pooling3d(x, name='avg_pool4')
@@ -51,15 +51,15 @@ class Classifier128(Classifier):
         num_classes = self.num_classes  # Chair/table classification
 
         x = layers.conv3d(x, 64, 3, strides=2, padding='same', name='conv1', reuse=self.reuse)
-        x = tf.layers.batch_normalization(x, training=self.is_training, name='conv1_batch_norm',
+        x = tf.compat.v1.layers.batch_normalization(x, training=self.is_training, name='conv1_batch_norm',
                                           reuse=self.reuse)
         x = layers.relu(x, name='conv1_relu')
         x = layers.conv3d(x, 128, 3, strides=2, padding='same', name='conv2', reuse=self.reuse)
-        x = tf.layers.batch_normalization(x, training=self.is_training, name='conv2_batch_norm',
+        x = tf.compat.v1.layers.batch_normalization(x, training=self.is_training, name='conv2_batch_norm',
                                           reuse=self.reuse)
         x = layers.relu(x, name='conv2_relu')
         x = layers.conv3d(x, 256, 3, strides=2, padding='same', name='conv3', reuse=self.reuse)
-        x = tf.layers.batch_normalization(x, training=self.is_training, name='conv3_batch_norm',
+        x = tf.compat.v1.layers.batch_normalization(x, training=self.is_training, name='conv3_batch_norm',
                                           reuse=self.reuse)
         x = layers.relu(x, name='conv3_relu')
         x = layers.avg_pooling3d(x, name='avg_pool4')

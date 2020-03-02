@@ -361,10 +361,10 @@ def get_inputs_dict(args):
         if ((cfg.CONST.SYNTH_EMBEDDING is True) or (args.text_encoder is True) or
                 (args.classifier is True)):
             if args.classifier and not cfg.CONST.REED_CLASSIFIER:  # Train on all splits for classifier
-                tf.logging.info('Using all (train/val/test) splits for training')
+                tf.compat.v1.logging.info('Using all (train/val/test) splits for training')
                 inputs_dict = utils.open_pickle(cfg.DIR.PRIMITIVES_ALL_SPLITS_DATA_PATH)
             else:
-                tf.logging.info('Using train split only for training')
+                tf.compat.v1.logging.info('Using train split only for training')
                 inputs_dict = utils.open_pickle(cfg.DIR.PRIMITIVES_TRAIN_DATA_PATH)
             val_inputs_dict = utils.open_pickle(cfg.DIR.PRIMITIVES_VAL_DATA_PATH)
             test_inputs_dict = utils.open_pickle(cfg.DIR.PRIMITIVES_TEST_DATA_PATH)
@@ -455,7 +455,7 @@ def main():
         yaml.dump(cfg, out_yaml, default_flow_style=False)
 
     # set up logger
-    tf.logging.set_verbosity(tf.logging.INFO)
+    tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.INFO)
 
     try:
         with tf.Graph().as_default() as g:  # create graph

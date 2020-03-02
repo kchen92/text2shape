@@ -18,7 +18,7 @@ class ClassifierSolver(Solver):
         self.val_ckpts = [None] * 5
 
     def validate(self, sess, val_queue, step, num_val_iter):
-        tf.logging.info('Running validation.')
+        tf.compat.v1.logging.info('Running validation.')
 
         minibatch_generator = self.val_phase_minibatch_generator(val_queue, num_val_iter)
         minibatch_list, outputs_list = self.forward_pass_batches(sess, minibatch_generator)
@@ -27,17 +27,17 @@ class ClassifierSolver(Solver):
         for minibatch, outputs in zip(minibatch_list, outputs_list):
             correct.extend(np.equal(minibatch['class_label_batch'], outputs['prediction']).tolist())
 
-        tf.logging.info('Evaluated {} samples.'.format(len(correct)))
+        tf.compat.v1.logging.info('Evaluated {} samples.'.format(len(correct)))
         cur_val_acc = sum(correct) / len(correct)
-        tf.logging.info('Accuracy: {}'.format(cur_val_acc))
+        tf.compat.v1.logging.info('Accuracy: {}'.format(cur_val_acc))
 
         # Check if we should terminate training
-        tf.logging.info('Previous validation accuracies:')
-        tf.logging.info(self.val_acc)
-        tf.logging.info('Current validation accuracy: {}'.format(cur_val_acc))
+        tf.compat.v1.logging.info('Previous validation accuracies:')
+        tf.compat.v1.logging.info(self.val_acc)
+        tf.compat.v1.logging.info('Current validation accuracy: {}'.format(cur_val_acc))
         if all(self.val_acc > cur_val_acc):
-            tf.logging.info('Best checkpoint: {}'.format(self.val_ckpts[np.argmax(self.val_acc)]))
-            tf.logging.info('Best accuracy: {}'.format(np.amax(self.val_acc)))
+            tf.compat.v1.logging.info('Best checkpoint: {}'.format(self.val_ckpts[np.argmax(self.val_acc)]))
+            tf.compat.v1.logging.info('Best accuracy: {}'.format(np.amax(self.val_acc)))
             return -1  # -1 is the termination flag
         else:  # Update val acc list
             self.val_acc = np.roll(self.val_acc, 1)
@@ -98,16 +98,16 @@ class ClassifierSolver(Solver):
         else:
             save_dir = os.path.join(cfg.DIR.LOG_PATH, ext[1:])
             os.makedirs(save_dir, exist_ok=False)
-        tf.logging.info('Outputs will be saved to: %s' % save_dir)
+        tf.compat.v1.logging.info('Outputs will be saved to: %s' % save_dir)
 
         # Save class labels and predictions if applicable
         txt_output_path = os.path.join(save_dir, 'classes_gt.txt')
         write_list_to_txt(gt_class_label_list, txt_output_path, add_numbers=True)
-        tf.logging.info('Saved outputs to: {}'.format(txt_output_path))
+        tf.compat.v1.logging.info('Saved outputs to: {}'.format(txt_output_path))
 
         txt_output_path = os.path.join(save_dir, 'classes_pred.txt')
         write_list_to_txt(output_class_label_list, txt_output_path, add_numbers=True)
-        tf.logging.info('Saved outputs to: {}'.format(txt_output_path))
+        tf.compat.v1.logging.info('Saved outputs to: {}'.format(txt_output_path))
 
         # Save classifier "encoder outputs" to pickle file
         encoder_outputs_dict = {data_dict['model_id']: data_dict['encoder_outputs']
@@ -115,11 +115,11 @@ class ClassifierSolver(Solver):
         encoder_output_path = os.path.join(save_dir, 'encoder_outputs.p')
         with open(encoder_output_path, 'wb') as f:
             pickle.dump(encoder_outputs_dict, f)
-        tf.logging.info('Saved outputs to: {}'.format(encoder_output_path))
+        tf.compat.v1.logging.info('Saved outputs to: {}'.format(encoder_output_path))
 
         # Write all data (in the list) to a pickle file
-        tf.logging.info('Saving all outputs in list to pickle file.')
+        tf.compat.v1.logging.info('Saving all outputs in list to pickle file.')
         output_path = os.path.join(save_dir, filename)
         with open(output_path, 'wb') as f:
             pickle.dump(data_list, f)
-        tf.logging.info('Saved outputs to: {}'.format(output_path))
+        tf.compat.v1.logging.info('Saved outputs to: {}'.format(output_path))

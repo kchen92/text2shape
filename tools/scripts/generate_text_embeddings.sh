@@ -25,11 +25,18 @@ echo "Log path: $log_path"
 
 echo "--- TEST SCRIPT ---"
 
+PYTHON_VAR="python"
+
+if grep -q Microsoft /proc/version; then
+  PYTHON_VAR="python.exe"
+  echo "WSL environment, enabling python.exe"
+fi
+
 # for split in "train" "val" "test"; do  # All splits
 for split in "test"; do  # Test split only
     cur_log_path="$log_path/$split"
     echo $cur_log_path
-    python main.py --model $1 \
+    $PYTHON_VAR main.py --model $1 \
         --text_encoder \
         --test \
         --save_outputs \

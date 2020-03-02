@@ -2,11 +2,11 @@ from lib.config import cfg
 import numpy as np
 
 from tensorflow.python.ops import variable_scope
-from tensorflow.contrib.layers.python.layers import initializers
+from tensorflow.compat.v1 import initializers
 from tensorflow.python.ops import init_ops
 
 import tensorflow as tf
-import tensorflow.contrib.slim as slim
+import tf_slim as slim
 
 
 def layer(op):
@@ -24,7 +24,7 @@ def layer(op):
             assert 'name' not in kwargs
             layer_name = kwargs['scope']
         if layer_name is not None:
-            tf.summary.histogram(layer_name + '_hist_summary', output)
+            tf.compat.v1.summary.histogram(layer_name + '_hist_summary', output)
 
         return output
 
@@ -38,7 +38,7 @@ def unpooling_3d(voxel_tensor_batch, reuse, name='unpooling_3d'):
     Args:
         voxel_tensor_batch: [batch, x, y, z, channel].
     """
-    with tf.variable_scope(name, reuse=reuse):
+    with tf.compat.v1.variable_scope(name, reuse=reuse):
         # Use fixed batch size
         batch_shape = voxel_tensor_batch.get_shape().as_list()
         batch_shape[0] = cfg.CONST.BATCH_SIZE
@@ -74,7 +74,7 @@ def unpooling_3d(voxel_tensor_batch, reuse, name='unpooling_3d'):
 def conv3d(*args, **kwargs):
     """Adds a 3D convolution layer and prints the output shape.
     """
-    output = tf.layers.conv3d(*args, **kwargs)
+    output = tf.compat.v1.layers.conv3d(*args, **kwargs)
     # tf.add_to_collection(tf.GraphKeys.ACTIVATIONS, output)
     if 'name' in kwargs:
         print('\t\t{scope}'.format(scope=kwargs['name']), output.get_shape())
@@ -85,7 +85,7 @@ def conv3d(*args, **kwargs):
 def avg_pooling3d(x, name, axis=[1, 2, 3], keep_dims=False):
     # output = tf.layers.average_pooling3d(*args, **kwargs)
     # output = tf.nn.avg_pool3d(*args, **kwargs)
-    output = tf.reduce_mean(x, axis=axis, keep_dims=keep_dims, name=name)
+    output = tf.reduce_mean(input_tensor=x, axis=axis, keepdims=keep_dims, name=name)
     print('\t\t{scope}'.format(scope=name), output.get_shape())
     return output
 
@@ -94,8 +94,8 @@ def avg_pooling3d(x, name, axis=[1, 2, 3], keep_dims=False):
 def dense(*args, **kwargs):
     """Adds a fully connected layer and prints the output shape.
     """
-    output = tf.layers.dense(*args, **kwargs)
-    tf.add_to_collection(tf.GraphKeys.ACTIVATIONS, output)
+    output = tf.compat.v1.layers.dense(*args, **kwargs)
+    tf.compat.v1.add_to_collection(tf.compat.v1.GraphKeys.ACTIVATIONS, output)
     if 'name' in kwargs:
         print('\t\t{scope}'.format(scope=kwargs['name']), output.get_shape())
     return output
@@ -131,7 +131,7 @@ def reshape(net, shape, scope):
 
 
 def softmax(logits, dim=-1, name=None):
-    output = tf.nn.softmax(logits, dim=dim, name=name)
+    output = tf.nn.softmax(logits, axis=dim, name=name)
     if 'name' is not None:
         print('\t\t{scope}'.format(scope=name), output.get_shape())
     return output
@@ -149,7 +149,7 @@ def smoothed_metric_loss(input_tensor, name='smoothed_metric_loss', margin=1):
     """
     input_tensor: require a tensor with predefined dimensions (No None dimension)
     """
-    with tf.variable_scope(name):
+    with tf.compat.v1.variable_scope(name):
         # Song et al., Deep Metric Learning via Lifted Structured Feature Embedding
         # Define feature X \in \mathbb{R}^{N \times C}
         X = input_tensor
@@ -160,13 +160,13 @@ def smoothed_metric_loss(input_tensor, name='smoothed_metric_loss', margin=1):
         if cfg.LBA.COSINE_DIST is True:
             assert (cfg.LBA.NORMALIZE is True) or (cfg.LBA.INVERTED_LOSS is True)
             assert ((cfg.LBA.NORMALIZE is True) and (margin < 1)) or (cfg.LBA.INVERTED_LOSS is True)
-            D = tf.reduce_sum(tf.multiply(Xe, tf.transpose(Xe, (1, 0, 2))), 2, keep_dims=False)
+            D = tf.reduce_sum(input_tensor=tf.multiply(Xe, tf.transpose(a=Xe, perm=(1, 0, 2))), axis=2, keepdims=False)
             if cfg.LBA.INVERTED_LOSS is False:
                 D = 1. - D
             else:
                 D /= 128.
         else:
-            Dsq = tf.reduce_sum(tf.square(Xe - tf.transpose(Xe, (1, 0, 2))), 2, keep_dims=False)
+            Dsq = tf.reduce_sum(input_tensor=tf.square(Xe - tf.transpose(a=Xe, perm=(1, 0, 2))), axis=2, keepdims=False)
             D = tf.sqrt(Dsq + 1e-8)
         if cfg.LBA.INVERTED_LOSS is True:
             expmD = tf.exp(m + D)
@@ -189,14 +189,14 @@ def smoothed_metric_loss(input_tensor, name='smoothed_metric_loss', margin=1):
             inds = [[i, k] for k in ind_rest]
             inds.extend([[j, l] for l in ind_rest])
             if cfg.LBA.INVERTED_LOSS is True:
-                J_ij = tf.log(tf.reduce_sum(tf.gather_nd(expmD, inds))) - tf.gather_nd(D, [[i, j]])
+                J_ij = tf.math.log(tf.reduce_sum(input_tensor=tf.gather_nd(expmD, inds))) - tf.gather_nd(D, [[i, j]])
             else:
-                J_ij = tf.log(tf.reduce_sum(tf.gather_nd(expmD, inds))) + tf.gather_nd(D, [[i, j]])
+                J_ij = tf.math.log(tf.reduce_sum(input_tensor=tf.gather_nd(expmD, inds))) + tf.gather_nd(D, [[i, j]])
             J_all.append(J_ij)
 
-        J_all = tf.convert_to_tensor(J_all)
-        loss = tf.divide(tf.reduce_mean(tf.square(tf.maximum(J_all, 0.))), 2.0, name='metric_loss')
-        tf.losses.add_loss(loss)
+        J_all = tf.convert_to_tensor(value=J_all)
+        loss = tf.divide(tf.reduce_mean(input_tensor=tf.square(tf.maximum(J_all, 0.))), 2.0, name='metric_loss')
+        tf.compat.v1.losses.add_loss(loss)
 
     return loss
 
@@ -207,7 +207,7 @@ def triplet_loss(input_tensor, name='triplet_loss', margin=1):
     Args:
         input_tensor: require a tensor with predefined dimensions (No None dimension)
     """
-    with tf.variable_scope(name):
+    with tf.compat.v1.variable_scope(name):
         # Song et al., Deep Metric Learning via Lifted Structured Feature Embedding
         # Define feature X \in \mathbb{R}^{N \times C}
         X = input_tensor
@@ -215,7 +215,7 @@ def triplet_loss(input_tensor, name='triplet_loss', margin=1):
 
         # Compute the pairwise distance
         Xe = tf.expand_dims(X, 1)
-        Dsq = tf.reduce_sum(tf.square(Xe - tf.transpose(Xe, (1, 0, 2))), 2)
+        Dsq = tf.reduce_sum(input_tensor=tf.square(Xe - tf.transpose(a=Xe, perm=(1, 0, 2))), axis=2)
         D = tf.sqrt(Dsq + 1e-8)
         mD = m - D
 
@@ -234,12 +234,12 @@ def triplet_loss(input_tensor, name='triplet_loss', margin=1):
 
             inds = [[i, k] for k in ind_rest]
             inds.extend([[j, l] for l in ind_rest])
-            J_ij = tf.reduce_max(tf.gather_nd(mD, inds)) + tf.gather_nd(D, [[i, j]])
+            J_ij = tf.reduce_max(input_tensor=tf.gather_nd(mD, inds)) + tf.gather_nd(D, [[i, j]])
             J_all.append(J_ij)
 
-        J_all = tf.convert_to_tensor(J_all)
-        loss = tf.divide(tf.reduce_mean(tf.square(tf.maximum(J_all, 0))), 2.0, name='metric_loss')
-        tf.losses.add_loss(loss)
+        J_all = tf.convert_to_tensor(value=J_all)
+        loss = tf.divide(tf.reduce_mean(input_tensor=tf.square(tf.maximum(J_all, 0))), 2.0, name='metric_loss')
+        tf.compat.v1.losses.add_loss(loss)
     return loss
 
 
@@ -257,7 +257,7 @@ def cross_entropy_sequence_loss(logits, targets, sequence_length, max_length=Non
     Returns:
         Loss: A tensor of shape [T, B] that contains the loss per example, per time step.
     """
-    with tf.name_scope("cross_entropy_sequence_loss"):
+    with tf.compat.v1.name_scope("cross_entropy_sequence_loss"):
         losses = tf.nn.sparse_softmax_cross_entropy_with_logits(
             logits=logits, labels=targets)
 
@@ -266,9 +266,9 @@ def cross_entropy_sequence_loss(logits, targets, sequence_length, max_length=Non
 
         # Mask out the losses we don't care about
         loss_mask = tf.sequence_mask(sequence_length, max_length)
-        losses = losses * tf.to_float(loss_mask)
-        loss_per_batch = tf.div(tf.reduce_sum(losses, 1), tf.reduce_sum(tf.to_float(loss_mask), 1))
-    return tf.reduce_mean(loss_per_batch)
+        losses = losses * tf.cast(loss_mask, dtype=tf.float32)
+        loss_per_batch = tf.compat.v1.div(tf.reduce_sum(input_tensor=losses, axis=1), tf.reduce_sum(input_tensor=tf.cast(loss_mask, dtype=tf.float32), axis=1))
+    return tf.reduce_mean(input_tensor=loss_per_batch)
 
 
 @slim.add_arg_scope
@@ -281,7 +281,7 @@ def conv3d_transpose(
         activation_fn=tf.nn.relu,
         normalizer_fn=None,
         normalizer_params=None,
-        weights_initializer=initializers.xavier_initializer(),
+        weights_initializer=initializers.glorot_uniform(),
         weights_regularizer=None,
         biases_initializer=init_ops.zeros_initializer(),
         biases_regularizer=None,
@@ -368,19 +368,19 @@ def relu(x, name='relu'):
 def leaky_relu(leak=0.2, name='leaky_relu'):
     @layer
     def lrelu(x, leak=leak, name=name):
-        with tf.variable_scope(name):
+        with tf.compat.v1.variable_scope(name):
             f1 = 0.5 * (1. + leak)
             f2 = 0.5 * (1. - leak)
             output = f1 * x + f2 * tf.abs(x)
-            tf.summary.histogram(name + '_hist_summary', output)
+            tf.compat.v1.summary.histogram(name + '_hist_summary', output)
         return output
     return lrelu
 
 
 def test_unpooling_3d():
-    placeholder = tf.placeholder(tf.float32, shape=[cfg.CONST.BATCH_SIZE, 8, 8, 8, 16])
+    placeholder = tf.compat.v1.placeholder(tf.float32, shape=[cfg.CONST.BATCH_SIZE, 8, 8, 8, 16])
     output = unpooling_3d(placeholder, name='unpooling_3d')
-    with tf.Session() as sess:
+    with tf.compat.v1.Session() as sess:
         x = np.random.rand(cfg.CONST.BATCH_SIZE, 8, 8, 8, 16)
         out = sess.run(output, feed_dict={placeholder: x})
 

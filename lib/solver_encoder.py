@@ -18,11 +18,11 @@ class TextEncoderSolver(Solver):
         super(TextEncoderSolver, self).__init__(net, graph, is_training)
 
         # Add a summary for validation performance
-        self.val_perf_placeholder = tf.placeholder(np.float32, shape=[], name='val_perf')
-        self.val_perf_summary = tf.summary.scalar('val_perf', self.val_perf_placeholder)
+        self.val_perf_placeholder = tf.compat.v1.placeholder(np.float32, shape=[], name='val_perf')
+        self.val_perf_summary = tf.compat.v1.summary.scalar('val_perf', self.val_perf_placeholder)
 
     def compute_metrics(self, embeddings_dict):
-        tf.logging.info('Using L2 distance.')
+        tf.compat.v1.logging.info('Using L2 distance.')
         metric = 'minkowski'
         try:
             return eval_text_encoder.compute_metrics(cfg.CONST.DATASET, embeddings_dict,
@@ -112,7 +112,7 @@ class TextEncoderSolver(Solver):
         Returns:
             val_loss: Loss for a single minibatch of validation data.
         """
-        tf.logging.info('Running validation.')
+        tf.compat.v1.logging.info('Running validation.')
 
         outputs_dict = self.get_outputs_dict(sess, val_queue, num_val_iter)
 
@@ -162,11 +162,11 @@ class TextEncoderSolver(Solver):
                         'dataset_size': len(caption_tuples),
                         'class_labels': class_labels}
 
-        tf.logging.info('Saving outputs.')
+        tf.compat.v1.logging.info('Saving outputs.')
         output_path = os.path.join(cfg.DIR.LOG_PATH, filename)
         with open(output_path, 'wb') as f:
             pickle.dump(outputs_dict, f)
-        tf.logging.info('Saved outputs to: {}'.format(output_path))
+        tf.compat.v1.logging.info('Saved outputs to: {}'.format(output_path))
 
         # Print results
         if not cfg.CONST.TEST_ALL_TUPLES:
@@ -181,7 +181,7 @@ class TextEncoderCosDistSolver(TextEncoderSolver):
         super(TextEncoderCosDistSolver, self).__init__(net, graph, is_training)
 
     def compute_metrics(self, embeddings_dict):
-        tf.logging.info('Using cosine distance.')
+        tf.compat.v1.logging.info('Using cosine distance.')
         metric = 'cosine'
         try:
             return eval_text_encoder.compute_metrics(cfg.CONST.DATASET, embeddings_dict,
@@ -253,11 +253,11 @@ class LBASolver(TextEncoderCosDistSolver):
                             'dataset_size': len(caption_tuples),
                             'class_labels': class_labels}
 
-            tf.logging.info('Saving outputs.')
+            tf.compat.v1.logging.info('Saving outputs.')
             output_path = os.path.join(cfg.DIR.LOG_PATH, filename)
             with open(output_path, 'wb') as f:
                 pickle.dump(outputs_dict, f)
-            tf.logging.info('Saved outputs to: {}'.format(output_path))
+            tf.compat.v1.logging.info('Saved outputs to: {}'.format(output_path))
 
             # Print results
             if not cfg.CONST.TEST_ALL_TUPLES:
@@ -270,11 +270,11 @@ class LBASolver(TextEncoderCosDistSolver):
                 'caption_embedding_tuples': text_dict['caption_embedding_tuples'] + outputs_dict['caption_embedding_tuples'],
                 'dataset_size': text_dict['dataset_size'] + outputs_dict['dataset_size'],
             }
-            tf.logging.info('Saving outputs.')
+            tf.compat.v1.logging.info('Saving outputs.')
             output_path = os.path.join(cfg.DIR.LOG_PATH, 'text_and_shape_embeddings.p')
             with open(output_path, 'wb') as f:
                 pickle.dump(combined_dict, f)
-            tf.logging.info('Saved outputs to: {}'.format(output_path))
+            tf.compat.v1.logging.info('Saved outputs to: {}'.format(output_path))
 
             if not cfg.CONST.TEST_ALL_TUPLES:
                 self.compute_metrics(combined_dict)
@@ -303,10 +303,10 @@ class LBASolver(TextEncoderCosDistSolver):
         caption_label_batch = np.asarray(list(range(cfg.CONST.BATCH_SIZE)))
         n_captions = len(caption_list)
         n_loop_captions = n_captions - (n_captions % cfg.CONST.BATCH_SIZE)
-        tf.logging.info('Number of captions: {}'.format(n_captions))
-        tf.logging.info(
+        tf.compat.v1.logging.info('Number of captions: {}'.format(n_captions))
+        tf.compat.v1.logging.info(
                 'Number of captions to loop through for validation: {}'.format(n_loop_captions))
-        tf.logging.info(
+        tf.compat.v1.logging.info(
                 'Number of batches to loop through for validation: {}'.format(n_loop_captions / cfg.CONST.BATCH_SIZE))
         for start in range(0, n_loop_captions, cfg.CONST.BATCH_SIZE):
             captions = caption_list[start:(start + cfg.CONST.BATCH_SIZE)]
@@ -321,21 +321,21 @@ class LBASolver(TextEncoderCosDistSolver):
             yield minibatch
 
     def get_classification_accuracy(self, minibatch_list, outputs_list):
-        tf.logging.info('Running validation.')
+        tf.compat.v1.logging.info('Running validation.')
 
         correct = []
         for minibatch, outputs in zip(minibatch_list, outputs_list):
             shape_label_batch = self.net.categorylist2labellist(minibatch['category_list'])
             correct.extend(np.equal(shape_label_batch, outputs['prediction']).tolist())
 
-        tf.logging.info('Evaluated {} samples.'.format(len(correct)))
+        tf.compat.v1.logging.info('Evaluated {} samples.'.format(len(correct)))
         cur_val_acc = sum(correct) / len(correct)
-        tf.logging.info('Classification accuracy: {}'.format(cur_val_acc))
+        tf.compat.v1.logging.info('Classification accuracy: {}'.format(cur_val_acc))
         return cur_val_acc
 
     def get_outputs_dict(self, sess, val_queue, num_val_iter):
         # Shape encodings
-        tf.logging.info('--> Computing shape encodings.')
+        tf.compat.v1.logging.info('--> Computing shape encodings.')
         minibatch_generator = self.val_phase_minibatch_generator(val_queue, num_val_iter)
         shape_minibatch_list, shape_outputs_list = self.forward_pass_batches(sess,
                                                                              minibatch_generator)
@@ -348,7 +348,7 @@ class LBASolver(TextEncoderCosDistSolver):
                                                                   shape_outputs_list)
 
         # Text encodings
-        tf.logging.info('--> Computing text encodings.')
+        tf.compat.v1.logging.info('--> Computing text encodings.')
         minibatch_generator = self.val_phase_text_minibatch_generator()
         text_minibatch_list, text_outputs_list = self.forward_pass_batches(sess,
                                                                            minibatch_generator)
@@ -359,11 +359,11 @@ class LBASolver(TextEncoderCosDistSolver):
         all_caption_tuples = shape_caption_tuples + text_caption_tuples
 
         # Logging
-        tf.logging.info('Number of computed shape encodings for validation: {}'.format(
+        tf.compat.v1.logging.info('Number of computed shape encodings for validation: {}'.format(
                 len(shape_caption_tuples)))
-        tf.logging.info('Number of computed text encodings for validation: {}'.format(
+        tf.compat.v1.logging.info('Number of computed text encodings for validation: {}'.format(
                 len(text_caption_tuples)))
-        tf.logging.info('Total number of computed encodings for validation: {}'.format(
+        tf.compat.v1.logging.info('Total number of computed encodings for validation: {}'.format(
                 len(all_caption_tuples)))
 
         outputs_dict = {'caption_embedding_tuples': all_caption_tuples,

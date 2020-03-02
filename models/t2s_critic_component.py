@@ -15,7 +15,7 @@ class Text2ShapeDiscriminator2(CriticNetComponent):
 
         leaky_relu_fn = layers.leaky_relu(leak=0.2)
 
-        with tf.variable_scope('architecture', reuse=self.reuse):
+        with tf.compat.v1.variable_scope('architecture', reuse=self.reuse):
             x = inputs_dict['shape_batch']
             print('\t\tinput', x.get_shape())
 
