@@ -40,10 +40,17 @@ function post_processing() {
 trap post_processing INT SIGINT SIGTERM
 ###################################
 
+PYTHON_VAR="python"
+
+if grep -q Microsoft /proc/version; then
+  PYTHON_VAR="python.exe"
+  echo "WSL environment, enabling python.exe"
+fi
+
 {
 LOG="$OUTPATH/$TIME.txt"
 echo Logging output to "$LOG"
-time python main.py \
+time $PYTHON_VAR main.py \
     --text_encoder \
     --model ${NETWORK} \
     --log_path $OUTPATH \
