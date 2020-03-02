@@ -1,0 +1,1094 @@
+Called with args:
+Namespace(all_tuples=False, augment_max=None, batch_size=100, cfg_files=None, ckpt_path=None, classifier=False, critic_lr_multiplier=None, critic_optimizer=None, dataset='primitives', decay_steps=5000, dont_save_voxels=False, end2end=False, fake_match_loss_coeff=None, fake_mismatch_loss_coeff=None, gp_weight=None, improved_wgan=False, intense_training_freq=None, is_debug=False, lba_ckpt_path=None, lba_mode='MM', lba_only=False, lba_test_mode='shape', lba_unnormalize=True, learning_rate=0.0002, log_path='./outputs/primitives/encoder_logdir/2020-03-02_14-45-28', match_loss_coeff=None, metric_learning_only=False, model='LBA1', n_minibatch_test=None, noise_dist=None, noise_size=None, non_inverted_loss=False, num_critic_steps=None, num_epochs=100, optimizer=None, queue_capacity=None, randomize=False, reed_classifier=False, save_outputs=False, set_cfgs=None, shape2shape_weight=None, shapenet_ct_classifier=False, split=None, summary_freq=None, synth_embedding=False, test=False, test_npy=False, text2text_weight=None, text_encoder=True, tiny_dataset=False, uniform_max=None, val_ckpt_path=None, validation=True, visit_weight=0.25)
+----------------- CONFIG -------------------
+{'CONST': {'BATCH_SIZE': 100,
+           'DATASET': 'primitives',
+           'IMPROVED_WGAN': False,
+           'NUM_WORKERS': 3,
+           'N_MINIBATCH_TEST': None,
+           'N_VOX': 32,
+           'PRINT_FREQ': 20,
+           'QUEUE_CAPACITY': 20,
+           'REED_CLASSIFIER': False,
+           'RNG_SEED': 123,
+           'SHAPENET_CT_CLASSIFIER': False,
+           'SYNTH_EMBEDDING': False,
+           'TEST_ALL_TUPLES': False},
+ 'DIR': {'CKPT_PATH': None,
+         'DATA_PATH': 'C:\\Users\\kohei\\minerva_ai\\text2shape\\text2shape-data',
+         'JSON_PATH': 'C:\\Users\\kohei\\minerva_ai\\text2shape\\text2shape-data\\shapenet\\shapenet.json',
+         'LOG_PATH': './outputs/primitives/encoder_logdir/2020-03-02_14-45-28',
+         'PRIMITIVES_ALL_SPLITS_DATA_PATH': 'C:\\Users\\kohei\\minerva_ai\\text2shape\\text2shape-data\\primitives\\combined_splits.p',
+         'PRIMITIVES_DATA_PATH': 'C:\\Users\\kohei\\minerva_ai\\text2shape\\text2shape-data\\primitives',
+         'PRIMITIVES_JSON_PATH': 'C:\\Users\\kohei\\minerva_ai\\text2shape\\text2shape-data\\primitives\\primitives.json',
+         'PRIMITIVES_METRIC_EMBEDDINGS_TEST': None,
+         'PRIMITIVES_METRIC_EMBEDDINGS_TRAIN': None,
+         'PRIMITIVES_METRIC_EMBEDDINGS_VAL': None,
+         'PRIMITIVES_RGB_VOXEL_PATH': 'C:\\Users\\kohei\\minerva_ai\\text2shape\\text2shape-data\\primitives\\%s\\%s',
+         'PRIMITIVES_TEST_DATA_PATH': 'C:\\Users\\kohei\\minerva_ai\\text2shape\\text2shape-data\\primitives\\processed_captions_test.p',
+         'PRIMITIVES_TRAIN_DATA_PATH': 'C:\\Users\\kohei\\minerva_ai\\text2shape\\text2shape-data\\primitives\\processed_captions_train.p',
+         'PRIMITIVES_VAL_DATA_PATH': 'C:\\Users\\kohei\\minerva_ai\\text2shape\\text2shape-data\\primitives\\processed_captions_val.p',
+         'PROBLEMATIC_NRRD_PATH': 'C:\\Users\\kohei\\minerva_ai\\text2shape\\text2shape-data\\shapenet\\problematic_nrrds_shapenet_unverified_256_filtered_div_with_err_textures.p',
+         'RAW_CAPTION_CSV': 'C:\\Users\\kohei\\minerva_ai\\text2shape\\text2shape-data\\captions.tablechair.csv',
+         'RGB_VOXEL_PATH': 'C:\\Users\\kohei\\minerva_ai\\text2shape\\text2shape-data\\shapenet\\nrrd_256_filter_div_128_solid\\%s\\%s.nrrd',
+         'SHAPENET_DATA_PATH': 'C:\\Users\\kohei\\minerva_ai\\text2shape\\text2shape-data\\shapenet',
+         'SHAPENET_METRIC_EMBEDDINGS_TEST': 'C:\\Users\\kohei\\minerva_ai\\text2shape\\text2shape-data\\shapenet\\shapenet-embeddings\\text_embeddings_test.p',
+         'SHAPENET_METRIC_EMBEDDINGS_TRAIN': 'C:\\Users\\kohei\\minerva_ai\\text2shape\\text2shape-data\\shapenet\\shapenet-embeddings\\text_embeddings_train.p',
+         'SHAPENET_METRIC_EMBEDDINGS_VAL': 'C:\\Users\\kohei\\minerva_ai\\text2shape\\text2shape-data\\shapenet\\shapenet-embeddings\\text_embeddings_val.p',
+         'TEST_DATA_PATH': 'C:\\Users\\kohei\\minerva_ai\\text2shape\\text2shape-data\\shapenet\\processed_captions_test.p',
+         'TOOLKIT_PATH': 'C:\\Users\\kohei\\minerva_ai\\sstk',
+         'TRAIN_DATA_PATH': 'C:\\Users\\kohei\\minerva_ai\\text2shape\\text2shape-data\\shapenet\\processed_captions_train.p',
+         'VAL_CKPT_PATH': None,
+         'VAL_DATA_PATH': 'C:\\Users\\kohei\\minerva_ai\\text2shape\\text2shape-data\\shapenet\\processed_captions_val.p'},
+ 'GAN': {'COLOR_EVALUATOR': 'hsv',
+         'COLOR_METRIC': 'EMD',
+         'D_ACCURACY_THRESHOLD': 0.8,
+         'D_LEARNING_RATE_MULTIPLIER': 1.0,
+         'D_OPTIMIZER': 'adam',
+         'INTERP': False,
+         'NOISE_DIST': 'uniform',
+         'NOISE_MEAN': 0.0,
+         'NOISE_SIZE': 32,
+         'NOISE_STDDEV': 1.0,
+         'NOISE_UNIF_ABS_MAX': 1.0},
+ 'LBA': {'CLASSIFICATION': False,
+         'CLASSIFICATION_MULTIPLIER': 10.0,
+         'COSINE_DIST': True,
+         'DIST_TYPE': 'standard',
+         'INVERTED_LOSS': True,
+         'MAX_NORM': 10.0,
+         'METRIC_MULTIPLIER': 1.0,
+         'MODEL_TYPE': 'MM',
+         'NORMALIZE': False,
+         'NO_LBA': False,
+         'N_CAPTIONS_PER_MODEL': 2,
+         'N_PRIMITIVE_SHAPES_PER_CATEGORY': 2,
+         'PROJECT_FREQ': 10,
+         'SHAPE_NORM_MULTIPLIER': 2.0,
+         'TEST_MODE': 'shape',
+         'TEXT_NORM_MULTIPLIER': 2.0,
+         'VISIT_WEIGHT': 0.25,
+         'WALKER_WEIGHT': 1.0},
+ 'NETWORK': 'LBA1',
+ 'TRAIN': {'AUGMENT_MAX': 0,
+           'CKPT_FREQ': 2500,
+           'DECAY_RATE': 0.95,
+           'DECAY_STEPS': 5000,
+           'LEARNING_RATE': 0.0002,
+           'NUM_EPOCHS': 100,
+           'OPTIMIZER': 'adam',
+           'STAIRCASE': True,
+           'SUMMARY_FREQ': 250,
+           'VALIDATION_FREQ': 2500},
+ 'VAL_NETWORK': 'Classifier128',
+ 'WGAN': {'FAKE_MATCH_LOSS_COEFF': 1.0,
+          'FAKE_MISMATCH_LOSS_COEFF': 1.0,
+          'GP_COEFF': 10.0,
+          'INTENSE_TRAINING_FREQ': 500,
+          'INTENSE_TRAINING_INTENSITY': 100,
+          'INTENSE_TRAINING_STEPS': 25,
+          'MATCH_LOSS_COEFF': 2.0,
+          'NUM_CRITIC_STEPS': 5,
+          'SHAPE2SHAPE_WEIGHT': 10.0,
+          'TEXT2TEXT_WEIGHT': 10.0}}
+INFO:tensorflow:Using train split only for training
+Validation/testing on val split.
+------------ BUILDING NETWORK -------------
+WARNING:tensorflow:From C:\Users\kohei\minerva_ai\text2shape\lib\lba.py:18: get_or_create_global_step (from tf_slim.ops.variables) is deprecated and will be removed in a future version.
+Instructions for updating:
+Please switch to tf.train.get_or_create_global_step
+WARNING:tensorflow:From C:\Users\kohei\AppData\Local\Programs\Python\Python37\lib\site-packages\tensorflow_core\python\ops\resource_variable_ops.py:1630: calling BaseResourceVariable.__init__ (from tensorflow.python.ops.resource_variable_ops) with constraint is deprecated and will be removed in a future version.
+Instructions for updating:
+If using Keras pass *_constraint arguments to layers.
+building network: lba_net1
+----> lba_net1/shape_batch:0 shape: (100, 32, 32, 32, 4)
+building network: text_encoder_example
+--> building embedding layer
+----> lba_net1/text_encoder_example/embedding_layer/input_embedding_batch/Identity_1:0 shape: (100, 8, 128)
+WARNING:tensorflow:From C:\Users\kohei\AppData\Local\Programs\Python\Python37\lib\site-packages\tf_slim-1.0-py3.7.egg\tf_slim\layers\layers.py:1089: Layer.apply (from tensorflow.python.keras.engine.base_layer) is deprecated and will be removed in a future version.
+Instructions for updating:
+Please use `layer.__call__` method instead.
+WARNING:tensorflow:From C:\Users\kohei\minerva_ai\text2shape\models\encoder_component.py:38: batch_normalization (from tensorflow.python.layers.normalization) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use keras.layers.BatchNormalization instead.  In particular, `tf.control_dependencies(tf.GraphKeys.UPDATE_OPS)` should not be used (consult the `tf.keras.layers.batch_normalization` documentation).
+WARNING:tensorflow:From C:\Users\kohei\minerva_ai\text2shape\models\encoder_component.py:45: GRUCell.__init__ (from tensorflow.python.ops.rnn_cell_impl) is deprecated and will be removed in a future version.
+Instructions for updating:
+This class is equivalent as tf.keras.layers.GRUCell, and will be replaced by that in Tensorflow 2.0.
+WARNING:tensorflow:From C:\Users\kohei\minerva_ai\text2shape\models\encoder_component.py:52: dynamic_rnn (from tensorflow.python.ops.rnn) is deprecated and will be removed in a future version.
+Instructions for updating:
+Please use `keras.layers.RNN(cell)`, which is equivalent to this API
+WARNING:tensorflow:From C:\Users\kohei\AppData\Local\Programs\Python\Python37\lib\site-packages\tensorflow_core\python\ops\rnn_cell_impl.py:559: Layer.add_variable (from tensorflow.python.keras.engine.base_layer) is deprecated and will be removed in a future version.
+Instructions for updating:
+Please use `layer.add_weight` method instead.
+WARNING:tensorflow:From C:\Users\kohei\AppData\Local\Programs\Python\Python37\lib\site-packages\tensorflow_core\python\ops\rnn_cell_impl.py:565: calling Constant.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+Instructions for updating:
+Call initializer instance with the dtype argument instead of passing it to the constructor
+WARNING:tensorflow:From C:\Users\kohei\AppData\Local\Programs\Python\Python37\lib\site-packages\tensorflow_core\python\ops\rnn_cell_impl.py:575: calling Zeros.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+Instructions for updating:
+Call initializer instance with the dtype argument instead of passing it to the constructor
+--> done building text_encoder_example
+building network: shape_encoder
+WARNING:tensorflow:From C:\Users\kohei\minerva_ai\text2shape\lib\layers.py:77: conv3d (from tensorflow.python.layers.convolutional) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use `tf.keras.layers.Conv3D` instead.
+		conv1 (100, 16, 16, 16, 64)
+		conv2 (100, 8, 8, 8, 128)
+		conv3 (100, 4, 4, 4, 256)
+		avg_pool4 (100, 256)
+WARNING:tensorflow:From C:\Users\kohei\minerva_ai\text2shape\lib\layers.py:97: dense (from tensorflow.python.layers.core) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use keras.layers.Dense instead.
+		fc5 (100, 128)
+		fc6 (100, 756)
+		softmax_layer (100, 756)
+--> done building shape_encoder
+--> building loss
+--> done building lba_net1
+Dataset statistics
+--> Format - num captions: num models with num captions
+--> Counter({3600: 54, 2400: 49, 4800: 38, 7200: 33, 300: 31, 180: 25, 600: 24, 5400: 22, 450: 22, 3200: 20, 360: 19, 270: 18, 1920: 18, 400: 18, 1600: 12, 2880: 12, 960: 12, 1280: 11, 1440: 11, 240: 10, 3840: 10, 200: 10, 6000: 9, 120: 9, 1680: 9, 840: 8, 560: 7, 1260: 7, 5760: 7, 9600: 6, 1120: 6, 800: 6, 2560: 6, 4320: 6, 6400: 5, 4000: 4, 640: 4, 9000: 4, 750: 3, 480: 3, 720: 3, 8000: 2, 1000: 2, 2240: 2, 2100: 2, 500: 2, 12000: 1, 1400: 1, 5120: 1, 1080: 1})
+Dataset statistics
+--> Format - num captions: num models with num captions
+--> Counter({3600: 54, 2400: 49, 4800: 38, 7200: 33, 300: 31, 180: 25, 600: 24, 5400: 22, 450: 22, 3200: 20, 360: 19, 270: 18, 1920: 18, 400: 18, 1600: 12, 2880: 12, 960: 12, 1280: 11, 1440: 11, 240: 10, 3840: 10, 200: 10, 6000: 9, 120: 9, 1680: 9, 840: 8, 560: 7, 1260: 7, 5760: 7, 9600: 6, 1120: 6, 800: 6, 2560: 6, 4320: 6, 6400: 5, 4000: 4, 640: 4, 9000: 4, 750: 3, 480: 3, 720: 3, 8000: 2, 1000: 2, 2240: 2, 2100: 2, 500: 2, 12000: 1, 1400: 1, 5120: 1, 1080: 1})
+Dataset statistics
+--> Format - num captions: num models with num captions
+--> Counter({3600: 54, 2400: 49, 4800: 38, 7200: 33, 300: 31, 180: 25, 600: 24, 5400: 22, 450: 22, 3200: 20, 360: 19, 270: 18, 1920: 18, 400: 18, 1600: 12, 2880: 12, 960: 12, 1280: 11, 1440: 11, 240: 10, 3840: 10, 200: 10, 6000: 9, 120: 9, 1680: 9, 840: 8, 560: 7, 1260: 7, 5760: 7, 9600: 6, 1120: 6, 800: 6, 2560: 6, 4320: 6, 6400: 5, 4000: 4, 640: 4, 9000: 4, 750: 3, 480: 3, 720: 3, 8000: 2, 1000: 2, 2240: 2, 2100: 2, 500: 2, 12000: 1, 1400: 1, 5120: 1, 1080: 1})
+trainable vars in lba_net1
+-->lba_net1/text_encoder_example/embedding_layer/embedding_matrix:0 shape: (77, 128)
+-->lba_net1/text_encoder_example/conv1/weights:0 shape: (3, 128, 128)
+-->lba_net1/text_encoder_example/conv1/biases:0 shape: (128,)
+-->lba_net1/text_encoder_example/conv2/weights:0 shape: (3, 128, 128)
+-->lba_net1/text_encoder_example/conv2/biases:0 shape: (128,)
+-->lba_net1/text_encoder_example/batch_normalization/gamma:0 shape: (128,)
+-->lba_net1/text_encoder_example/batch_normalization/beta:0 shape: (128,)
+-->lba_net1/text_encoder_example/conv3/weights:0 shape: (3, 128, 256)
+-->lba_net1/text_encoder_example/conv3/biases:0 shape: (256,)
+-->lba_net1/text_encoder_example/conv4/weights:0 shape: (3, 256, 256)
+-->lba_net1/text_encoder_example/conv4/biases:0 shape: (256,)
+-->lba_net1/text_encoder_example/batch_normalization_1/gamma:0 shape: (256,)
+-->lba_net1/text_encoder_example/batch_normalization_1/beta:0 shape: (256,)
+-->lba_net1/text_encoder_example/rnn/gru_cell/gates/kernel:0 shape: (512, 512)
+-->lba_net1/text_encoder_example/rnn/gru_cell/gates/bias:0 shape: (512,)
+-->lba_net1/text_encoder_example/rnn/gru_cell/candidate/kernel:0 shape: (512, 256)
+-->lba_net1/text_encoder_example/rnn/gru_cell/candidate/bias:0 shape: (256,)
+-->lba_net1/text_encoder_example/fc5/weights:0 shape: (256, 256)
+-->lba_net1/text_encoder_example/fc5/biases:0 shape: (256,)
+-->lba_net1/text_encoder_example/fc6/weights:0 shape: (256, 128)
+-->lba_net1/text_encoder_example/fc6/biases:0 shape: (128,)
+-->lba_net1/shape_encoder/conv1/kernel:0 shape: (3, 3, 3, 4, 64)
+-->lba_net1/shape_encoder/conv1/bias:0 shape: (64,)
+-->lba_net1/shape_encoder/conv1_batch_norm/gamma:0 shape: (64,)
+-->lba_net1/shape_encoder/conv1_batch_norm/beta:0 shape: (64,)
+-->lba_net1/shape_encoder/conv2/kernel:0 shape: (3, 3, 3, 64, 128)
+-->lba_net1/shape_encoder/conv2/bias:0 shape: (128,)
+-->lba_net1/shape_encoder/conv2_batch_norm/gamma:0 shape: (128,)
+-->lba_net1/shape_encoder/conv2_batch_norm/beta:0 shape: (128,)
+-->lba_net1/shape_encoder/conv3/kernel:0 shape: (3, 3, 3, 128, 256)
+-->lba_net1/shape_encoder/conv3/bias:0 shape: (256,)
+-->lba_net1/shape_encoder/conv3_batch_norm/gamma:0 shape: (256,)
+-->lba_net1/shape_encoder/conv3_batch_norm/beta:0 shape: (256,)
+-->lba_net1/shape_encoder/fc5/kernel:0 shape: (256, 128)
+-->lba_net1/shape_encoder/fc5/bias:0 shape: (128,)
+-->lba_net1/shape_encoder/fc6/kernel:0 shape: (128, 756)
+-->lba_net1/shape_encoder/fc6/bias:0 shape: (756,)
+saver variables:
+-->lba_net1/text_encoder_example/embedding_layer/embedding_matrix:0 shape: (77, 128)
+-->lba_net1/text_encoder_example/conv1/weights:0 shape: (3, 128, 128)
+-->lba_net1/text_encoder_example/conv1/biases:0 shape: (128,)
+-->lba_net1/text_encoder_example/conv2/weights:0 shape: (3, 128, 128)
+-->lba_net1/text_encoder_example/conv2/biases:0 shape: (128,)
+-->lba_net1/text_encoder_example/batch_normalization/gamma:0 shape: (128,)
+-->lba_net1/text_encoder_example/batch_normalization/beta:0 shape: (128,)
+-->lba_net1/text_encoder_example/batch_normalization/moving_mean:0 shape: (128,)
+-->lba_net1/text_encoder_example/batch_normalization/moving_variance:0 shape: (128,)
+-->lba_net1/text_encoder_example/conv3/weights:0 shape: (3, 128, 256)
+-->lba_net1/text_encoder_example/conv3/biases:0 shape: (256,)
+-->lba_net1/text_encoder_example/conv4/weights:0 shape: (3, 256, 256)
+-->lba_net1/text_encoder_example/conv4/biases:0 shape: (256,)
+-->lba_net1/text_encoder_example/batch_normalization_1/gamma:0 shape: (256,)
+-->lba_net1/text_encoder_example/batch_normalization_1/beta:0 shape: (256,)
+-->lba_net1/text_encoder_example/batch_normalization_1/moving_mean:0 shape: (256,)
+-->lba_net1/text_encoder_example/batch_normalization_1/moving_variance:0 shape: (256,)
+-->lba_net1/text_encoder_example/rnn/gru_cell/gates/kernel:0 shape: (512, 512)
+-->lba_net1/text_encoder_example/rnn/gru_cell/gates/bias:0 shape: (512,)
+-->lba_net1/text_encoder_example/rnn/gru_cell/candidate/kernel:0 shape: (512, 256)
+-->lba_net1/text_encoder_example/rnn/gru_cell/candidate/bias:0 shape: (256,)
+-->lba_net1/text_encoder_example/fc5/weights:0 shape: (256, 256)
+-->lba_net1/text_encoder_example/fc5/biases:0 shape: (256,)
+-->lba_net1/text_encoder_example/fc6/weights:0 shape: (256, 128)
+-->lba_net1/text_encoder_example/fc6/biases:0 shape: (128,)
+-->lba_net1/shape_encoder/conv1/kernel:0 shape: (3, 3, 3, 4, 64)
+-->lba_net1/shape_encoder/conv1/bias:0 shape: (64,)
+-->lba_net1/shape_encoder/conv1_batch_norm/gamma:0 shape: (64,)
+-->lba_net1/shape_encoder/conv1_batch_norm/beta:0 shape: (64,)
+-->lba_net1/shape_encoder/conv1_batch_norm/moving_mean:0 shape: (64,)
+-->lba_net1/shape_encoder/conv1_batch_norm/moving_variance:0 shape: (64,)
+-->lba_net1/shape_encoder/conv2/kernel:0 shape: (3, 3, 3, 64, 128)
+-->lba_net1/shape_encoder/conv2/bias:0 shape: (128,)
+-->lba_net1/shape_encoder/conv2_batch_norm/gamma:0 shape: (128,)
+-->lba_net1/shape_encoder/conv2_batch_norm/beta:0 shape: (128,)
+-->lba_net1/shape_encoder/conv2_batch_norm/moving_mean:0 shape: (128,)
+-->lba_net1/shape_encoder/conv2_batch_norm/moving_variance:0 shape: (128,)
+-->lba_net1/shape_encoder/conv3/kernel:0 shape: (3, 3, 3, 128, 256)
+-->lba_net1/shape_encoder/conv3/bias:0 shape: (256,)
+-->lba_net1/shape_encoder/conv3_batch_norm/gamma:0 shape: (256,)
+-->lba_net1/shape_encoder/conv3_batch_norm/beta:0 shape: (256,)
+-->lba_net1/shape_encoder/conv3_batch_norm/moving_mean:0 shape: (256,)
+-->lba_net1/shape_encoder/conv3_batch_norm/moving_variance:0 shape: (256,)
+-->lba_net1/shape_encoder/fc5/kernel:0 shape: (256, 128)
+-->lba_net1/shape_encoder/fc5/bias:0 shape: (128,)
+-->lba_net1/shape_encoder/fc6/kernel:0 shape: (128, 756)
+-->lba_net1/shape_encoder/fc6/bias:0 shape: (756,)
+-------------- BEGIN TRAINING --------------
+--------- NUMBER OF TRAINING STEPS ---------
+number of epochs: 100
+batch size: 100
+number of steps per epoch: 12
+total number of training steps: 1200
+INFO:tensorflow:Using network with random weights.
+----------- train step 000020 ---------------
+INFO:tensorflow:2020-03-02 14:46:33.486399	tst_walker_loss: 4.155106544494629
+INFO:tensorflow:2020-03-02 14:46:33.486399	tst_visit_loss: 1.1667314767837524
+INFO:tensorflow:2020-03-02 14:46:33.486399	sts_walker_loss: 3.8642752170562744
+INFO:tensorflow:2020-03-02 14:46:33.486399	sts_visit_loss: 1.1721287965774536
+INFO:tensorflow:2020-03-02 14:46:33.487397	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:46:33.487397	total_loss: 69.8924560546875
+INFO:tensorflow:2020-03-02 14:46:33.487397	metric_tt: 19.667312622070312
+INFO:tensorflow:2020-03-02 14:46:33.487397	metric_st_and_ts: 39.51689529418945
+INFO:tensorflow:2020-03-02 14:46:33.487397	weighted text norm: 0.0
+INFO:tensorflow:2020-03-02 14:46:33.487397	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:46:33.487397	queue size: 19/20
+INFO:tensorflow:2020-03-02 14:46:33.487397	data fetch (sec/step): 0.06
+INFO:tensorflow:2020-03-02 14:46:33.487397	train step (sec/step): 0.48
+----------- train step 000040 ---------------
+INFO:tensorflow:2020-03-02 14:46:38.075812	tst_walker_loss: 3.8473432064056396
+INFO:tensorflow:2020-03-02 14:46:38.075812	tst_visit_loss: 1.172598123550415
+INFO:tensorflow:2020-03-02 14:46:38.075812	sts_walker_loss: 3.3970534801483154
+INFO:tensorflow:2020-03-02 14:46:38.076809	sts_visit_loss: 1.1901321411132812
+INFO:tensorflow:2020-03-02 14:46:38.076809	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:46:38.076809	total_loss: 69.04071807861328
+INFO:tensorflow:2020-03-02 14:46:38.076809	metric_tt: 19.584251403808594
+INFO:tensorflow:2020-03-02 14:46:38.076809	metric_st_and_ts: 39.41606903076172
+INFO:tensorflow:2020-03-02 14:46:38.076809	weighted text norm: 0.0
+INFO:tensorflow:2020-03-02 14:46:38.076809	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:46:38.076809	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:46:38.076809	data fetch (sec/step): 0.07
+INFO:tensorflow:2020-03-02 14:46:38.076809	train step (sec/step): 0.23
+----------- train step 000060 ---------------
+INFO:tensorflow:2020-03-02 14:46:42.655133	tst_walker_loss: 3.4918508529663086
+INFO:tensorflow:2020-03-02 14:46:42.656131	tst_visit_loss: 1.18796968460083
+INFO:tensorflow:2020-03-02 14:46:42.656131	sts_walker_loss: 3.0068676471710205
+INFO:tensorflow:2020-03-02 14:46:42.656131	sts_visit_loss: 1.20347261428833
+INFO:tensorflow:2020-03-02 14:46:42.656131	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:46:42.656131	total_loss: 68.22589111328125
+INFO:tensorflow:2020-03-02 14:46:42.656131	metric_tt: 19.22940444946289
+INFO:tensorflow:2020-03-02 14:46:42.656131	metric_st_and_ts: 39.4428825378418
+INFO:tensorflow:2020-03-02 14:46:42.656131	weighted text norm: 0.0
+INFO:tensorflow:2020-03-02 14:46:42.656131	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:46:42.656131	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:46:42.656131	data fetch (sec/step): 0.07
+INFO:tensorflow:2020-03-02 14:46:42.656131	train step (sec/step): 0.23
+----------- train step 000080 ---------------
+INFO:tensorflow:2020-03-02 14:46:47.173034	tst_walker_loss: 3.163264274597168
+INFO:tensorflow:2020-03-02 14:46:47.174031	tst_visit_loss: 1.207323670387268
+INFO:tensorflow:2020-03-02 14:46:47.174031	sts_walker_loss: 2.8246707916259766
+INFO:tensorflow:2020-03-02 14:46:47.174031	sts_visit_loss: 1.2019206285476685
+INFO:tensorflow:2020-03-02 14:46:47.174031	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:46:47.174031	total_loss: 66.63190460205078
+INFO:tensorflow:2020-03-02 14:46:47.174031	metric_tt: 18.015819549560547
+INFO:tensorflow:2020-03-02 14:46:47.174031	metric_st_and_ts: 39.50348663330078
+INFO:tensorflow:2020-03-02 14:46:47.174031	weighted text norm: 0.019735317677259445
+INFO:tensorflow:2020-03-02 14:46:47.174031	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:46:47.174031	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:46:47.174031	data fetch (sec/step): 0.06
+INFO:tensorflow:2020-03-02 14:46:47.174031	train step (sec/step): 0.23
+----------- train step 000100 ---------------
+INFO:tensorflow:2020-03-02 14:46:51.671371	tst_walker_loss: 3.2320892810821533
+INFO:tensorflow:2020-03-02 14:46:51.671371	tst_visit_loss: 1.2259297370910645
+INFO:tensorflow:2020-03-02 14:46:51.671371	sts_walker_loss: 2.7855920791625977
+INFO:tensorflow:2020-03-02 14:46:51.671371	sts_visit_loss: 1.208775520324707
+INFO:tensorflow:2020-03-02 14:46:51.671371	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:46:51.671371	total_loss: 66.22560119628906
+INFO:tensorflow:2020-03-02 14:46:51.671371	metric_tt: 17.568988800048828
+INFO:tensorflow:2020-03-02 14:46:51.671371	metric_st_and_ts: 39.526126861572266
+INFO:tensorflow:2020-03-02 14:46:51.671371	weighted text norm: 0.03690006211400032
+INFO:tensorflow:2020-03-02 14:46:51.671371	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:46:51.671371	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:46:51.671371	data fetch (sec/step): 0.06
+INFO:tensorflow:2020-03-02 14:46:51.671371	train step (sec/step): 0.22
+----------- train step 000120 ---------------
+INFO:tensorflow:2020-03-02 14:46:56.253780	tst_walker_loss: 2.7556729316711426
+INFO:tensorflow:2020-03-02 14:46:56.254777	tst_visit_loss: 1.2153643369674683
+INFO:tensorflow:2020-03-02 14:46:56.254777	sts_walker_loss: 2.371138095855713
+INFO:tensorflow:2020-03-02 14:46:56.254777	sts_visit_loss: 1.2010087966918945
+INFO:tensorflow:2020-03-02 14:46:56.254777	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:46:56.254777	total_loss: 64.74785614013672
+INFO:tensorflow:2020-03-02 14:46:56.254777	metric_tt: 16.969484329223633
+INFO:tensorflow:2020-03-02 14:46:56.254777	metric_st_and_ts: 39.36329650878906
+INFO:tensorflow:2020-03-02 14:46:56.254777	weighted text norm: 0.010607986710965633
+INFO:tensorflow:2020-03-02 14:46:56.254777	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:46:56.254777	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:46:56.254777	data fetch (sec/step): 0.06
+INFO:tensorflow:2020-03-02 14:46:56.254777	train step (sec/step): 0.23
+----------- train step 000140 ---------------
+INFO:tensorflow:2020-03-02 14:47:00.837350	tst_walker_loss: 2.557245969772339
+INFO:tensorflow:2020-03-02 14:47:00.837350	tst_visit_loss: 1.238889455795288
+INFO:tensorflow:2020-03-02 14:47:00.837350	sts_walker_loss: 2.364488124847412
+INFO:tensorflow:2020-03-02 14:47:00.837350	sts_visit_loss: 1.2072525024414062
+INFO:tensorflow:2020-03-02 14:47:00.837350	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:47:00.837350	total_loss: 64.07609558105469
+INFO:tensorflow:2020-03-02 14:47:00.837350	metric_tt: 16.439977645874023
+INFO:tensorflow:2020-03-02 14:47:00.838319	metric_st_and_ts: 39.26093292236328
+INFO:tensorflow:2020-03-02 14:47:00.838319	weighted text norm: 0.08096382021903992
+INFO:tensorflow:2020-03-02 14:47:00.838319	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:47:00.838319	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:47:00.838319	data fetch (sec/step): 0.06
+INFO:tensorflow:2020-03-02 14:47:00.838319	train step (sec/step): 0.23
+----------- train step 000160 ---------------
+INFO:tensorflow:2020-03-02 14:47:05.428791	tst_walker_loss: 2.363732099533081
+INFO:tensorflow:2020-03-02 14:47:05.429789	tst_visit_loss: 1.1962426900863647
+INFO:tensorflow:2020-03-02 14:47:05.429789	sts_walker_loss: 2.138681650161743
+INFO:tensorflow:2020-03-02 14:47:05.429789	sts_visit_loss: 1.2096178531646729
+INFO:tensorflow:2020-03-02 14:47:05.429789	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:47:05.429789	total_loss: 63.01945495605469
+INFO:tensorflow:2020-03-02 14:47:05.429789	metric_tt: 16.1821231842041
+INFO:tensorflow:2020-03-02 14:47:05.429789	metric_st_and_ts: 38.976280212402344
+INFO:tensorflow:2020-03-02 14:47:05.429789	weighted text norm: 0.06845556199550629
+INFO:tensorflow:2020-03-02 14:47:05.429789	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:47:05.429789	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:47:05.429789	data fetch (sec/step): 0.06
+INFO:tensorflow:2020-03-02 14:47:05.429789	train step (sec/step): 0.23
+----------- train step 000180 ---------------
+INFO:tensorflow:2020-03-02 14:47:09.999486	tst_walker_loss: 2.3148140907287598
+INFO:tensorflow:2020-03-02 14:47:09.999486	tst_visit_loss: 1.218348741531372
+INFO:tensorflow:2020-03-02 14:47:09.999486	sts_walker_loss: 2.0555691719055176
+INFO:tensorflow:2020-03-02 14:47:09.999486	sts_visit_loss: 1.2186241149902344
+INFO:tensorflow:2020-03-02 14:47:09.999486	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:47:09.999486	total_loss: 62.74244689941406
+INFO:tensorflow:2020-03-02 14:47:09.999486	metric_tt: 16.109909057617188
+INFO:tensorflow:2020-03-02 14:47:09.999486	metric_st_and_ts: 39.025264739990234
+INFO:tensorflow:2020-03-02 14:47:09.999486	weighted text norm: 0.04949932172894478
+INFO:tensorflow:2020-03-02 14:47:09.999486	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:47:09.999486	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:47:09.999486	data fetch (sec/step): 0.06
+INFO:tensorflow:2020-03-02 14:47:09.999486	train step (sec/step): 0.23
+----------- train step 000200 ---------------
+INFO:tensorflow:2020-03-02 14:47:14.603370	tst_walker_loss: 2.411996841430664
+INFO:tensorflow:2020-03-02 14:47:14.604396	tst_visit_loss: 1.2310161590576172
+INFO:tensorflow:2020-03-02 14:47:14.604396	sts_walker_loss: 2.2038097381591797
+INFO:tensorflow:2020-03-02 14:47:14.604396	sts_visit_loss: 1.2225728034973145
+INFO:tensorflow:2020-03-02 14:47:14.604396	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:47:14.604396	total_loss: 63.260623931884766
+INFO:tensorflow:2020-03-02 14:47:14.604396	metric_tt: 16.05353546142578
+INFO:tensorflow:2020-03-02 14:47:14.604396	metric_st_and_ts: 38.96726608276367
+INFO:tensorflow:2020-03-02 14:47:14.604396	weighted text norm: 0.08513674139976501
+INFO:tensorflow:2020-03-02 14:47:14.604396	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:47:14.604396	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:47:14.604396	data fetch (sec/step): 0.06
+INFO:tensorflow:2020-03-02 14:47:14.604396	train step (sec/step): 0.23
+----------- train step 000220 ---------------
+INFO:tensorflow:2020-03-02 14:47:19.044617	tst_walker_loss: 2.300889253616333
+INFO:tensorflow:2020-03-02 14:47:19.044617	tst_visit_loss: 1.2230744361877441
+INFO:tensorflow:2020-03-02 14:47:19.044617	sts_walker_loss: 1.9979188442230225
+INFO:tensorflow:2020-03-02 14:47:19.044617	sts_visit_loss: 1.209560513496399
+INFO:tensorflow:2020-03-02 14:47:19.044617	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:47:19.044617	total_loss: 62.23917007446289
+INFO:tensorflow:2020-03-02 14:47:19.044617	metric_tt: 15.958978652954102
+INFO:tensorflow:2020-03-02 14:47:19.044617	metric_st_and_ts: 38.82573318481445
+INFO:tensorflow:2020-03-02 14:47:19.044617	weighted text norm: 0.11754468828439713
+INFO:tensorflow:2020-03-02 14:47:19.044617	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:47:19.044617	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:47:19.044617	data fetch (sec/step): 0.06
+INFO:tensorflow:2020-03-02 14:47:19.044617	train step (sec/step): 0.22
+----------- train step 000240 ---------------
+INFO:tensorflow:2020-03-02 14:47:23.583378	tst_walker_loss: 2.1499149799346924
+INFO:tensorflow:2020-03-02 14:47:23.583378	tst_visit_loss: 1.2119808197021484
+INFO:tensorflow:2020-03-02 14:47:23.583378	sts_walker_loss: 1.9992544651031494
+INFO:tensorflow:2020-03-02 14:47:23.583378	sts_visit_loss: 1.191392421722412
+INFO:tensorflow:2020-03-02 14:47:23.583378	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:47:23.583378	total_loss: 62.253143310546875
+INFO:tensorflow:2020-03-02 14:47:23.583378	metric_tt: 15.987940788269043
+INFO:tensorflow:2020-03-02 14:47:23.583378	metric_st_and_ts: 38.876468658447266
+INFO:tensorflow:2020-03-02 14:47:23.584371	weighted text norm: 0.07839694619178772
+INFO:tensorflow:2020-03-02 14:47:23.584371	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:47:23.584371	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:47:23.584371	data fetch (sec/step): 0.06
+INFO:tensorflow:2020-03-02 14:47:23.584371	train step (sec/step): 0.23
+----------- train step 000260 ---------------
+INFO:tensorflow:2020-03-02 14:47:30.059806	tst_walker_loss: 2.1614556312561035
+INFO:tensorflow:2020-03-02 14:47:30.059806	tst_visit_loss: 1.245895266532898
+INFO:tensorflow:2020-03-02 14:47:30.059806	sts_walker_loss: 2.1503496170043945
+INFO:tensorflow:2020-03-02 14:47:30.059806	sts_visit_loss: 1.2248291969299316
+INFO:tensorflow:2020-03-02 14:47:30.059806	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:47:30.059806	total_loss: 62.340721130371094
+INFO:tensorflow:2020-03-02 14:47:30.059806	metric_tt: 15.945276260375977
+INFO:tensorflow:2020-03-02 14:47:30.059806	metric_st_and_ts: 38.50821304321289
+INFO:tensorflow:2020-03-02 14:47:30.059806	weighted text norm: 0.07326827943325043
+INFO:tensorflow:2020-03-02 14:47:30.059806	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:47:30.059806	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:47:30.059806	data fetch (sec/step): 0.06
+INFO:tensorflow:2020-03-02 14:47:30.059806	train step (sec/step): 0.32
+----------- train step 000280 ---------------
+INFO:tensorflow:2020-03-02 14:47:35.204163	tst_walker_loss: 2.0682969093322754
+INFO:tensorflow:2020-03-02 14:47:35.204163	tst_visit_loss: 1.2365093231201172
+INFO:tensorflow:2020-03-02 14:47:35.204163	sts_walker_loss: 1.9546643495559692
+INFO:tensorflow:2020-03-02 14:47:35.204163	sts_visit_loss: 1.2288044691085815
+INFO:tensorflow:2020-03-02 14:47:35.204163	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:47:35.204163	total_loss: 61.95112228393555
+INFO:tensorflow:2020-03-02 14:47:35.204163	metric_tt: 15.9234619140625
+INFO:tensorflow:2020-03-02 14:47:35.205160	metric_st_and_ts: 38.7432861328125
+INFO:tensorflow:2020-03-02 14:47:35.205160	weighted text norm: 0.0572681799530983
+INFO:tensorflow:2020-03-02 14:47:35.205160	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:47:35.205160	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:47:35.205160	data fetch (sec/step): 0.07
+INFO:tensorflow:2020-03-02 14:47:35.205160	train step (sec/step): 0.26
+----------- train step 000300 ---------------
+INFO:tensorflow:2020-03-02 14:47:41.563807	tst_walker_loss: 2.0947561264038086
+INFO:tensorflow:2020-03-02 14:47:41.563807	tst_visit_loss: 1.2264907360076904
+INFO:tensorflow:2020-03-02 14:47:41.563807	sts_walker_loss: 1.9191073179244995
+INFO:tensorflow:2020-03-02 14:47:41.563807	sts_visit_loss: 1.2145962715148926
+INFO:tensorflow:2020-03-02 14:47:41.563807	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:47:41.564805	total_loss: 61.19131088256836
+INFO:tensorflow:2020-03-02 14:47:41.564805	metric_tt: 15.748638153076172
+INFO:tensorflow:2020-03-02 14:47:41.564805	metric_st_and_ts: 38.39116287231445
+INFO:tensorflow:2020-03-02 14:47:41.564805	weighted text norm: 0.10564891993999481
+INFO:tensorflow:2020-03-02 14:47:41.564805	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:47:41.564805	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:47:41.564805	data fetch (sec/step): 0.10
+INFO:tensorflow:2020-03-02 14:47:41.564805	train step (sec/step): 0.32
+----------- train step 000320 ---------------
+INFO:tensorflow:2020-03-02 14:47:48.939800	tst_walker_loss: 2.045762300491333
+INFO:tensorflow:2020-03-02 14:47:48.940798	tst_visit_loss: 1.238336443901062
+INFO:tensorflow:2020-03-02 14:47:48.940798	sts_walker_loss: 1.9895802736282349
+INFO:tensorflow:2020-03-02 14:47:48.940798	sts_visit_loss: 1.2290427684783936
+INFO:tensorflow:2020-03-02 14:47:48.940798	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:47:48.940798	total_loss: 61.43634033203125
+INFO:tensorflow:2020-03-02 14:47:48.940798	metric_tt: 15.800644874572754
+INFO:tensorflow:2020-03-02 14:47:48.940798	metric_st_and_ts: 38.46028137207031
+INFO:tensorflow:2020-03-02 14:47:48.940798	weighted text norm: 0.07590816169977188
+INFO:tensorflow:2020-03-02 14:47:48.940798	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:47:48.940798	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:47:48.940798	data fetch (sec/step): 0.12
+INFO:tensorflow:2020-03-02 14:47:48.940798	train step (sec/step): 0.37
+----------- train step 000340 ---------------
+INFO:tensorflow:2020-03-02 14:47:55.772424	tst_walker_loss: 2.0179789066314697
+INFO:tensorflow:2020-03-02 14:47:55.772424	tst_visit_loss: 1.2633410692214966
+INFO:tensorflow:2020-03-02 14:47:55.772424	sts_walker_loss: 1.8742986917495728
+INFO:tensorflow:2020-03-02 14:47:55.772424	sts_visit_loss: 1.2356343269348145
+INFO:tensorflow:2020-03-02 14:47:55.772424	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:47:55.772424	total_loss: 61.597320556640625
+INFO:tensorflow:2020-03-02 14:47:55.772424	metric_tt: 15.84781265258789
+INFO:tensorflow:2020-03-02 14:47:55.772424	metric_st_and_ts: 38.35364532470703
+INFO:tensorflow:2020-03-02 14:47:55.772424	weighted text norm: 0.02698417752981186
+INFO:tensorflow:2020-03-02 14:47:55.772424	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:47:55.772424	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:47:55.772424	data fetch (sec/step): 0.11
+INFO:tensorflow:2020-03-02 14:47:55.772424	train step (sec/step): 0.34
+----------- train step 000360 ---------------
+INFO:tensorflow:2020-03-02 14:48:02.140260	tst_walker_loss: 1.9935001134872437
+INFO:tensorflow:2020-03-02 14:48:02.140260	tst_visit_loss: 1.24102783203125
+INFO:tensorflow:2020-03-02 14:48:02.140260	sts_walker_loss: 1.7176945209503174
+INFO:tensorflow:2020-03-02 14:48:02.140260	sts_visit_loss: 1.216766119003296
+INFO:tensorflow:2020-03-02 14:48:02.140260	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:48:02.140260	total_loss: 60.806427001953125
+INFO:tensorflow:2020-03-02 14:48:02.140260	metric_tt: 15.754280090332031
+INFO:tensorflow:2020-03-02 14:48:02.140260	metric_st_and_ts: 38.17597961425781
+INFO:tensorflow:2020-03-02 14:48:02.140260	weighted text norm: 0.08990392833948135
+INFO:tensorflow:2020-03-02 14:48:02.140260	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:48:02.140260	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:48:02.141253	data fetch (sec/step): 0.10
+INFO:tensorflow:2020-03-02 14:48:02.141253	train step (sec/step): 0.32
+----------- train step 000380 ---------------
+INFO:tensorflow:2020-03-02 14:48:09.558402	tst_walker_loss: 2.002713918685913
+INFO:tensorflow:2020-03-02 14:48:09.559400	tst_visit_loss: 1.208264708518982
+INFO:tensorflow:2020-03-02 14:48:09.559400	sts_walker_loss: 1.89186692237854
+INFO:tensorflow:2020-03-02 14:48:09.559400	sts_visit_loss: 1.1941008567810059
+INFO:tensorflow:2020-03-02 14:48:09.559400	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:48:09.559400	total_loss: 61.07270812988281
+INFO:tensorflow:2020-03-02 14:48:09.559400	metric_tt: 15.728039741516113
+INFO:tensorflow:2020-03-02 14:48:09.559400	metric_st_and_ts: 38.11337661743164
+INFO:tensorflow:2020-03-02 14:48:09.559400	weighted text norm: 0.1156257838010788
+INFO:tensorflow:2020-03-02 14:48:09.559400	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:48:09.559400	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:48:09.559400	data fetch (sec/step): 0.11
+INFO:tensorflow:2020-03-02 14:48:09.559400	train step (sec/step): 0.37
+----------- train step 000400 ---------------
+INFO:tensorflow:2020-03-02 14:48:16.647557	tst_walker_loss: 2.0229570865631104
+INFO:tensorflow:2020-03-02 14:48:16.647557	tst_visit_loss: 1.2380151748657227
+INFO:tensorflow:2020-03-02 14:48:16.647557	sts_walker_loss: 1.955625057220459
+INFO:tensorflow:2020-03-02 14:48:16.647557	sts_visit_loss: 1.2169983386993408
+INFO:tensorflow:2020-03-02 14:48:16.647557	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:48:16.647557	total_loss: 60.99011993408203
+INFO:tensorflow:2020-03-02 14:48:16.647557	metric_tt: 15.809464454650879
+INFO:tensorflow:2020-03-02 14:48:16.647557	metric_st_and_ts: 37.87302780151367
+INFO:tensorflow:2020-03-02 14:48:16.647557	weighted text norm: 0.10681714862585068
+INFO:tensorflow:2020-03-02 14:48:16.647557	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:48:16.647557	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:48:16.647557	data fetch (sec/step): 0.11
+INFO:tensorflow:2020-03-02 14:48:16.647557	train step (sec/step): 0.35
+----------- train step 000420 ---------------
+INFO:tensorflow:2020-03-02 14:48:23.501673	tst_walker_loss: 2.1767916679382324
+INFO:tensorflow:2020-03-02 14:48:23.501673	tst_visit_loss: 1.2503188848495483
+INFO:tensorflow:2020-03-02 14:48:23.501673	sts_walker_loss: 2.0144917964935303
+INFO:tensorflow:2020-03-02 14:48:23.501673	sts_visit_loss: 1.213012456893921
+INFO:tensorflow:2020-03-02 14:48:23.501673	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:48:23.501673	total_loss: 61.34248733520508
+INFO:tensorflow:2020-03-02 14:48:23.501673	metric_tt: 15.830805778503418
+INFO:tensorflow:2020-03-02 14:48:23.501673	metric_st_and_ts: 38.0414924621582
+INFO:tensorflow:2020-03-02 14:48:23.501673	weighted text norm: 0.06942258775234222
+INFO:tensorflow:2020-03-02 14:48:23.501673	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:48:23.501673	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:48:23.501673	data fetch (sec/step): 0.10
+INFO:tensorflow:2020-03-02 14:48:23.501673	train step (sec/step): 0.34
+----------- train step 000440 ---------------
+INFO:tensorflow:2020-03-02 14:48:29.622263	tst_walker_loss: 2.003617286682129
+INFO:tensorflow:2020-03-02 14:48:29.622263	tst_visit_loss: 1.238157868385315
+INFO:tensorflow:2020-03-02 14:48:29.622263	sts_walker_loss: 1.9137388467788696
+INFO:tensorflow:2020-03-02 14:48:29.622263	sts_visit_loss: 1.2114547491073608
+INFO:tensorflow:2020-03-02 14:48:29.622263	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:48:29.622263	total_loss: 61.235050201416016
+INFO:tensorflow:2020-03-02 14:48:29.622263	metric_tt: 15.722940444946289
+INFO:tensorflow:2020-03-02 14:48:29.622263	metric_st_and_ts: 37.986019134521484
+INFO:tensorflow:2020-03-02 14:48:29.622263	weighted text norm: 0.07988002896308899
+INFO:tensorflow:2020-03-02 14:48:29.622263	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:48:29.622263	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:48:29.622263	data fetch (sec/step): 0.09
+INFO:tensorflow:2020-03-02 14:48:29.622263	train step (sec/step): 0.31
+----------- train step 000460 ---------------
+INFO:tensorflow:2020-03-02 14:48:35.179197	tst_walker_loss: 2.0077459812164307
+INFO:tensorflow:2020-03-02 14:48:35.180195	tst_visit_loss: 1.2488155364990234
+INFO:tensorflow:2020-03-02 14:48:35.180195	sts_walker_loss: 1.8905000686645508
+INFO:tensorflow:2020-03-02 14:48:35.180195	sts_visit_loss: 1.21976637840271
+INFO:tensorflow:2020-03-02 14:48:35.180195	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:48:35.180195	total_loss: 61.36450958251953
+INFO:tensorflow:2020-03-02 14:48:35.180195	metric_tt: 15.816157341003418
+INFO:tensorflow:2020-03-02 14:48:35.180195	metric_st_and_ts: 38.04464340209961
+INFO:tensorflow:2020-03-02 14:48:35.180195	weighted text norm: 0.04937333986163139
+INFO:tensorflow:2020-03-02 14:48:35.180195	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:48:35.180195	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:48:35.180195	data fetch (sec/step): 0.08
+INFO:tensorflow:2020-03-02 14:48:35.180195	train step (sec/step): 0.28
+----------- train step 000480 ---------------
+INFO:tensorflow:2020-03-02 14:48:40.154318	tst_walker_loss: 1.9356023073196411
+INFO:tensorflow:2020-03-02 14:48:40.155316	tst_visit_loss: 1.2321935892105103
+INFO:tensorflow:2020-03-02 14:48:40.155316	sts_walker_loss: 1.75925874710083
+INFO:tensorflow:2020-03-02 14:48:40.155316	sts_visit_loss: 1.2297158241271973
+INFO:tensorflow:2020-03-02 14:48:40.155316	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:48:40.155316	total_loss: 60.459190368652344
+INFO:tensorflow:2020-03-02 14:48:40.155316	metric_tt: 15.6876859664917
+INFO:tensorflow:2020-03-02 14:48:40.155316	metric_st_and_ts: 37.77064514160156
+INFO:tensorflow:2020-03-02 14:48:40.155316	weighted text norm: 0.11889003962278366
+INFO:tensorflow:2020-03-02 14:48:40.155316	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:48:40.155316	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:48:40.155316	data fetch (sec/step): 0.07
+INFO:tensorflow:2020-03-02 14:48:40.155316	train step (sec/step): 0.25
+----------- train step 000500 ---------------
+INFO:tensorflow:2020-03-02 14:48:45.814607	tst_walker_loss: 1.959578514099121
+INFO:tensorflow:2020-03-02 14:48:45.814607	tst_visit_loss: 1.2371731996536255
+INFO:tensorflow:2020-03-02 14:48:45.814607	sts_walker_loss: 1.74653959274292
+INFO:tensorflow:2020-03-02 14:48:45.814607	sts_visit_loss: 1.2359923124313354
+INFO:tensorflow:2020-03-02 14:48:45.814607	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:48:45.814607	total_loss: 60.352439880371094
+INFO:tensorflow:2020-03-02 14:48:45.814607	metric_tt: 15.698747634887695
+INFO:tensorflow:2020-03-02 14:48:45.814607	metric_st_and_ts: 37.553192138671875
+INFO:tensorflow:2020-03-02 14:48:45.814607	weighted text norm: 0.09823272377252579
+INFO:tensorflow:2020-03-02 14:48:45.814607	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:48:45.814607	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:48:45.814607	data fetch (sec/step): 0.08
+INFO:tensorflow:2020-03-02 14:48:45.814607	train step (sec/step): 0.28
+----------- train step 000520 ---------------
+INFO:tensorflow:2020-03-02 14:48:50.586312	tst_walker_loss: 1.9806674718856812
+INFO:tensorflow:2020-03-02 14:48:50.586312	tst_visit_loss: 1.2423748970031738
+INFO:tensorflow:2020-03-02 14:48:50.586312	sts_walker_loss: 1.8100582361221313
+INFO:tensorflow:2020-03-02 14:48:50.586312	sts_visit_loss: 1.2019660472869873
+INFO:tensorflow:2020-03-02 14:48:50.586312	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:48:50.586312	total_loss: 60.511131286621094
+INFO:tensorflow:2020-03-02 14:48:50.586312	metric_tt: 15.768157958984375
+INFO:tensorflow:2020-03-02 14:48:50.587296	metric_st_and_ts: 37.41310119628906
+INFO:tensorflow:2020-03-02 14:48:50.587296	weighted text norm: 0.07664075493812561
+INFO:tensorflow:2020-03-02 14:48:50.587296	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:48:50.587296	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:48:50.587296	data fetch (sec/step): 0.07
+INFO:tensorflow:2020-03-02 14:48:50.587296	train step (sec/step): 0.24
+----------- train step 000540 ---------------
+INFO:tensorflow:2020-03-02 14:48:55.069375	tst_walker_loss: 1.8068095445632935
+INFO:tensorflow:2020-03-02 14:48:55.069375	tst_visit_loss: 1.2589280605316162
+INFO:tensorflow:2020-03-02 14:48:55.069375	sts_walker_loss: 1.7854613065719604
+INFO:tensorflow:2020-03-02 14:48:55.069375	sts_visit_loss: 1.2116291522979736
+INFO:tensorflow:2020-03-02 14:48:55.069375	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:48:55.069375	total_loss: 60.19956970214844
+INFO:tensorflow:2020-03-02 14:48:55.069375	metric_tt: 15.736528396606445
+INFO:tensorflow:2020-03-02 14:48:55.069375	metric_st_and_ts: 37.48704528808594
+INFO:tensorflow:2020-03-02 14:48:55.069375	weighted text norm: 0.04969736188650131
+INFO:tensorflow:2020-03-02 14:48:55.069375	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:48:55.069375	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:48:55.069375	data fetch (sec/step): 0.06
+INFO:tensorflow:2020-03-02 14:48:55.069375	train step (sec/step): 0.22
+----------- train step 000560 ---------------
+INFO:tensorflow:2020-03-02 14:48:59.818713	tst_walker_loss: 2.025770902633667
+INFO:tensorflow:2020-03-02 14:48:59.818713	tst_visit_loss: 1.2624417543411255
+INFO:tensorflow:2020-03-02 14:48:59.818713	sts_walker_loss: 1.944801688194275
+INFO:tensorflow:2020-03-02 14:48:59.818713	sts_visit_loss: 1.246144413948059
+INFO:tensorflow:2020-03-02 14:48:59.818713	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:48:59.818713	total_loss: 60.624752044677734
+INFO:tensorflow:2020-03-02 14:48:59.818713	metric_tt: 15.698586463928223
+INFO:tensorflow:2020-03-02 14:48:59.818713	metric_st_and_ts: 37.50419616699219
+INFO:tensorflow:2020-03-02 14:48:59.818713	weighted text norm: 0.0932232066988945
+INFO:tensorflow:2020-03-02 14:48:59.818713	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:48:59.818713	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:48:59.818713	data fetch (sec/step): 0.07
+INFO:tensorflow:2020-03-02 14:48:59.818713	train step (sec/step): 0.24
+----------- train step 000580 ---------------
+INFO:tensorflow:2020-03-02 14:49:04.596442	tst_walker_loss: 1.8204231262207031
+INFO:tensorflow:2020-03-02 14:49:04.596442	tst_visit_loss: 1.236643671989441
+INFO:tensorflow:2020-03-02 14:49:04.596442	sts_walker_loss: 1.6338286399841309
+INFO:tensorflow:2020-03-02 14:49:04.596442	sts_visit_loss: 1.2144949436187744
+INFO:tensorflow:2020-03-02 14:49:04.596442	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:49:04.596442	total_loss: 60.24528503417969
+INFO:tensorflow:2020-03-02 14:49:04.596442	metric_tt: 15.700810432434082
+INFO:tensorflow:2020-03-02 14:49:04.596442	metric_st_and_ts: 37.43291091918945
+INFO:tensorflow:2020-03-02 14:49:04.596442	weighted text norm: 0.03971235454082489
+INFO:tensorflow:2020-03-02 14:49:04.597438	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:49:04.597438	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:49:04.597438	data fetch (sec/step): 0.07
+INFO:tensorflow:2020-03-02 14:49:04.597438	train step (sec/step): 0.24
+----------- train step 000600 ---------------
+INFO:tensorflow:2020-03-02 14:49:09.798874	tst_walker_loss: 1.8443537950515747
+INFO:tensorflow:2020-03-02 14:49:09.798874	tst_visit_loss: 1.2621690034866333
+INFO:tensorflow:2020-03-02 14:49:09.798874	sts_walker_loss: 1.740045428276062
+INFO:tensorflow:2020-03-02 14:49:09.798874	sts_visit_loss: 1.2385351657867432
+INFO:tensorflow:2020-03-02 14:49:09.798874	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:49:09.798874	total_loss: 60.26211929321289
+INFO:tensorflow:2020-03-02 14:49:09.798874	metric_tt: 15.634607315063477
+INFO:tensorflow:2020-03-02 14:49:09.798874	metric_st_and_ts: 37.29619598388672
+INFO:tensorflow:2020-03-02 14:49:09.798874	weighted text norm: 0.13348355889320374
+INFO:tensorflow:2020-03-02 14:49:09.798874	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:49:09.798874	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:49:09.798874	data fetch (sec/step): 0.08
+INFO:tensorflow:2020-03-02 14:49:09.798874	train step (sec/step): 0.26
+----------- train step 000620 ---------------
+INFO:tensorflow:2020-03-02 14:49:14.453735	tst_walker_loss: 1.6593852043151855
+INFO:tensorflow:2020-03-02 14:49:14.453735	tst_visit_loss: 1.2347674369812012
+INFO:tensorflow:2020-03-02 14:49:14.453735	sts_walker_loss: 1.630115032196045
+INFO:tensorflow:2020-03-02 14:49:14.453735	sts_visit_loss: 1.2173751592636108
+INFO:tensorflow:2020-03-02 14:49:14.453735	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:49:14.453735	total_loss: 59.80952072143555
+INFO:tensorflow:2020-03-02 14:49:14.454757	metric_tt: 15.687743186950684
+INFO:tensorflow:2020-03-02 14:49:14.454757	metric_st_and_ts: 37.468082427978516
+INFO:tensorflow:2020-03-02 14:49:14.454757	weighted text norm: 0.06914015114307404
+INFO:tensorflow:2020-03-02 14:49:14.454757	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:49:14.454757	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:49:14.454757	data fetch (sec/step): 0.07
+INFO:tensorflow:2020-03-02 14:49:14.454757	train step (sec/step): 0.23
+----------- train step 000640 ---------------
+INFO:tensorflow:2020-03-02 14:49:19.065926	tst_walker_loss: 1.6522107124328613
+INFO:tensorflow:2020-03-02 14:49:19.065926	tst_visit_loss: 1.2623189687728882
+INFO:tensorflow:2020-03-02 14:49:19.065926	sts_walker_loss: 1.6970715522766113
+INFO:tensorflow:2020-03-02 14:49:19.065926	sts_visit_loss: 1.212050199508667
+INFO:tensorflow:2020-03-02 14:49:19.065926	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:49:19.065926	total_loss: 59.6478157043457
+INFO:tensorflow:2020-03-02 14:49:19.065926	metric_tt: 15.626921653747559
+INFO:tensorflow:2020-03-02 14:49:19.065926	metric_st_and_ts: 36.99238586425781
+INFO:tensorflow:2020-03-02 14:49:19.065926	weighted text norm: 0.1322840303182602
+INFO:tensorflow:2020-03-02 14:49:19.065926	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:49:19.065926	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:49:19.065926	data fetch (sec/step): 0.06
+INFO:tensorflow:2020-03-02 14:49:19.066920	train step (sec/step): 0.23
+----------- train step 000660 ---------------
+INFO:tensorflow:2020-03-02 14:49:23.866323	tst_walker_loss: 1.711816668510437
+INFO:tensorflow:2020-03-02 14:49:23.866323	tst_visit_loss: 1.2765508890151978
+INFO:tensorflow:2020-03-02 14:49:23.866323	sts_walker_loss: 1.8398683071136475
+INFO:tensorflow:2020-03-02 14:49:23.866323	sts_visit_loss: 1.2009434700012207
+INFO:tensorflow:2020-03-02 14:49:23.866323	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:49:23.866323	total_loss: 60.190879821777344
+INFO:tensorflow:2020-03-02 14:49:23.866323	metric_tt: 15.670485496520996
+INFO:tensorflow:2020-03-02 14:49:23.866323	metric_st_and_ts: 37.1143798828125
+INFO:tensorflow:2020-03-02 14:49:23.866323	weighted text norm: 0.06569071114063263
+INFO:tensorflow:2020-03-02 14:49:23.866323	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:49:23.866323	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:49:23.866323	data fetch (sec/step): 0.07
+INFO:tensorflow:2020-03-02 14:49:23.866323	train step (sec/step): 0.24
+----------- train step 000680 ---------------
+INFO:tensorflow:2020-03-02 14:49:28.527441	tst_walker_loss: 2.067401647567749
+INFO:tensorflow:2020-03-02 14:49:28.527441	tst_visit_loss: 1.256788969039917
+INFO:tensorflow:2020-03-02 14:49:28.527441	sts_walker_loss: 1.8871198892593384
+INFO:tensorflow:2020-03-02 14:49:28.527441	sts_visit_loss: 1.2682826519012451
+INFO:tensorflow:2020-03-02 14:49:28.527441	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:49:28.527441	total_loss: 60.69411087036133
+INFO:tensorflow:2020-03-02 14:49:28.527441	metric_tt: 15.730927467346191
+INFO:tensorflow:2020-03-02 14:49:28.527441	metric_st_and_ts: 37.113426208496094
+INFO:tensorflow:2020-03-02 14:49:28.527441	weighted text norm: 0.1145620346069336
+INFO:tensorflow:2020-03-02 14:49:28.527441	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:49:28.527441	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:49:28.527441	data fetch (sec/step): 0.06
+INFO:tensorflow:2020-03-02 14:49:28.527441	train step (sec/step): 0.23
+----------- train step 000700 ---------------
+INFO:tensorflow:2020-03-02 14:49:33.130077	tst_walker_loss: 1.797856330871582
+INFO:tensorflow:2020-03-02 14:49:33.130077	tst_visit_loss: 1.258996605873108
+INFO:tensorflow:2020-03-02 14:49:33.130077	sts_walker_loss: 1.7420779466629028
+INFO:tensorflow:2020-03-02 14:49:33.130077	sts_visit_loss: 1.246243953704834
+INFO:tensorflow:2020-03-02 14:49:33.130077	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:49:33.130077	total_loss: 59.22251510620117
+INFO:tensorflow:2020-03-02 14:49:33.130077	metric_tt: 15.64499282836914
+INFO:tensorflow:2020-03-02 14:49:33.130077	metric_st_and_ts: 36.73704147338867
+INFO:tensorflow:2020-03-02 14:49:33.131073	weighted text norm: 0.07889635115861893
+INFO:tensorflow:2020-03-02 14:49:33.131073	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:49:33.131073	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:49:33.131073	data fetch (sec/step): 0.06
+INFO:tensorflow:2020-03-02 14:49:33.131073	train step (sec/step): 0.23
+----------- train step 000720 ---------------
+INFO:tensorflow:2020-03-02 14:49:38.029744	tst_walker_loss: 2.048560857772827
+INFO:tensorflow:2020-03-02 14:49:38.030740	tst_visit_loss: 1.2475627660751343
+INFO:tensorflow:2020-03-02 14:49:38.030740	sts_walker_loss: 1.8624255657196045
+INFO:tensorflow:2020-03-02 14:49:38.030740	sts_visit_loss: 1.2280174493789673
+INFO:tensorflow:2020-03-02 14:49:38.030740	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:49:38.030740	total_loss: 60.00474166870117
+INFO:tensorflow:2020-03-02 14:49:38.030740	metric_tt: 15.680717468261719
+INFO:tensorflow:2020-03-02 14:49:38.030740	metric_st_and_ts: 37.07432174682617
+INFO:tensorflow:2020-03-02 14:49:38.030740	weighted text norm: 0.10017271339893341
+INFO:tensorflow:2020-03-02 14:49:38.030740	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:49:38.030740	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:49:38.030740	data fetch (sec/step): 0.07
+INFO:tensorflow:2020-03-02 14:49:38.030740	train step (sec/step): 0.24
+----------- train step 000740 ---------------
+INFO:tensorflow:2020-03-02 14:49:42.684168	tst_walker_loss: 1.8783224821090698
+INFO:tensorflow:2020-03-02 14:49:42.684168	tst_visit_loss: 1.2556568384170532
+INFO:tensorflow:2020-03-02 14:49:42.685162	sts_walker_loss: 1.6897692680358887
+INFO:tensorflow:2020-03-02 14:49:42.685162	sts_visit_loss: 1.2221696376800537
+INFO:tensorflow:2020-03-02 14:49:42.685162	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:49:42.685162	total_loss: 59.567420959472656
+INFO:tensorflow:2020-03-02 14:49:42.685162	metric_tt: 15.65969467163086
+INFO:tensorflow:2020-03-02 14:49:42.685162	metric_st_and_ts: 36.74492645263672
+INFO:tensorflow:2020-03-02 14:49:42.685162	weighted text norm: 0.09930028766393661
+INFO:tensorflow:2020-03-02 14:49:42.685162	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:49:42.685162	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:49:42.685162	data fetch (sec/step): 0.07
+INFO:tensorflow:2020-03-02 14:49:42.685162	train step (sec/step): 0.23
+----------- train step 000760 ---------------
+INFO:tensorflow:2020-03-02 14:49:47.607768	tst_walker_loss: 1.8768751621246338
+INFO:tensorflow:2020-03-02 14:49:47.607768	tst_visit_loss: 1.2785546779632568
+INFO:tensorflow:2020-03-02 14:49:47.607768	sts_walker_loss: 1.8394405841827393
+INFO:tensorflow:2020-03-02 14:49:47.607768	sts_visit_loss: 1.2346988916397095
+INFO:tensorflow:2020-03-02 14:49:47.607768	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:49:47.607768	total_loss: 59.7891845703125
+INFO:tensorflow:2020-03-02 14:49:47.607768	metric_tt: 15.64956283569336
+INFO:tensorflow:2020-03-02 14:49:47.607768	metric_st_and_ts: 36.78285598754883
+INFO:tensorflow:2020-03-02 14:49:47.607768	weighted text norm: 0.09794878214597702
+INFO:tensorflow:2020-03-02 14:49:47.607768	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:49:47.607768	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:49:47.607768	data fetch (sec/step): 0.06
+INFO:tensorflow:2020-03-02 14:49:47.607768	train step (sec/step): 0.25
+----------- train step 000780 ---------------
+INFO:tensorflow:2020-03-02 14:49:52.289152	tst_walker_loss: 1.8491051197052002
+INFO:tensorflow:2020-03-02 14:49:52.289152	tst_visit_loss: 1.2566030025482178
+INFO:tensorflow:2020-03-02 14:49:52.289152	sts_walker_loss: 1.7455317974090576
+INFO:tensorflow:2020-03-02 14:49:52.289152	sts_visit_loss: 1.2417255640029907
+INFO:tensorflow:2020-03-02 14:49:52.289152	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:49:52.289152	total_loss: 59.65324401855469
+INFO:tensorflow:2020-03-02 14:49:52.289152	metric_tt: 15.751506805419922
+INFO:tensorflow:2020-03-02 14:49:52.289152	metric_st_and_ts: 36.714202880859375
+INFO:tensorflow:2020-03-02 14:49:52.289152	weighted text norm: 0.06963451206684113
+INFO:tensorflow:2020-03-02 14:49:52.289152	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:49:52.289152	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:49:52.289152	data fetch (sec/step): 0.06
+INFO:tensorflow:2020-03-02 14:49:52.289152	train step (sec/step): 0.23
+----------- train step 000800 ---------------
+INFO:tensorflow:2020-03-02 14:49:58.828737	tst_walker_loss: 1.7441818714141846
+INFO:tensorflow:2020-03-02 14:49:58.828737	tst_visit_loss: 1.310497760772705
+INFO:tensorflow:2020-03-02 14:49:58.828737	sts_walker_loss: 1.958665370941162
+INFO:tensorflow:2020-03-02 14:49:58.828737	sts_visit_loss: 1.2031731605529785
+INFO:tensorflow:2020-03-02 14:49:58.828737	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:49:58.828737	total_loss: 59.75244903564453
+INFO:tensorflow:2020-03-02 14:49:58.828737	metric_tt: 15.652234077453613
+INFO:tensorflow:2020-03-02 14:49:58.828737	metric_st_and_ts: 36.50886154174805
+INFO:tensorflow:2020-03-02 14:49:58.828737	weighted text norm: 0.10194425284862518
+INFO:tensorflow:2020-03-02 14:49:58.828737	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:49:58.828737	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:49:58.828737	data fetch (sec/step): 0.10
+INFO:tensorflow:2020-03-02 14:49:58.828737	train step (sec/step): 0.33
+----------- train step 000820 ---------------
+INFO:tensorflow:2020-03-02 14:50:05.687417	tst_walker_loss: 1.8027715682983398
+INFO:tensorflow:2020-03-02 14:50:05.687417	tst_visit_loss: 1.2631536722183228
+INFO:tensorflow:2020-03-02 14:50:05.687417	sts_walker_loss: 1.7712310552597046
+INFO:tensorflow:2020-03-02 14:50:05.687417	sts_visit_loss: 1.2215162515640259
+INFO:tensorflow:2020-03-02 14:50:05.687417	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:50:05.687417	total_loss: 59.44196319580078
+INFO:tensorflow:2020-03-02 14:50:05.687417	metric_tt: 15.719704627990723
+INFO:tensorflow:2020-03-02 14:50:05.687417	metric_st_and_ts: 36.30779266357422
+INFO:tensorflow:2020-03-02 14:50:05.687417	weighted text norm: 0.07244554162025452
+INFO:tensorflow:2020-03-02 14:50:05.687417	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:50:05.687417	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:50:05.687417	data fetch (sec/step): 0.11
+INFO:tensorflow:2020-03-02 14:50:05.687417	train step (sec/step): 0.34
+----------- train step 000840 ---------------
+INFO:tensorflow:2020-03-02 14:50:12.387232	tst_walker_loss: 1.747236967086792
+INFO:tensorflow:2020-03-02 14:50:12.387232	tst_visit_loss: 1.2447558641433716
+INFO:tensorflow:2020-03-02 14:50:12.387232	sts_walker_loss: 1.6167675256729126
+INFO:tensorflow:2020-03-02 14:50:12.387232	sts_visit_loss: 1.2204567193984985
+INFO:tensorflow:2020-03-02 14:50:12.387232	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:50:12.387232	total_loss: 59.104801177978516
+INFO:tensorflow:2020-03-02 14:50:12.387232	metric_tt: 15.65018081665039
+INFO:tensorflow:2020-03-02 14:50:12.387232	metric_st_and_ts: 36.2327995300293
+INFO:tensorflow:2020-03-02 14:50:12.387232	weighted text norm: 0.08740899711847305
+INFO:tensorflow:2020-03-02 14:50:12.387232	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:50:12.387232	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:50:12.387232	data fetch (sec/step): 0.11
+INFO:tensorflow:2020-03-02 14:50:12.387232	train step (sec/step): 0.33
+----------- train step 000860 ---------------
+INFO:tensorflow:2020-03-02 14:50:18.478936	tst_walker_loss: 1.9004634618759155
+INFO:tensorflow:2020-03-02 14:50:18.479932	tst_visit_loss: 1.292851448059082
+INFO:tensorflow:2020-03-02 14:50:18.479932	sts_walker_loss: 1.8183975219726562
+INFO:tensorflow:2020-03-02 14:50:18.479932	sts_visit_loss: 1.2514081001281738
+INFO:tensorflow:2020-03-02 14:50:18.479932	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:50:18.479932	total_loss: 59.436214447021484
+INFO:tensorflow:2020-03-02 14:50:18.479932	metric_tt: 15.647831916809082
+INFO:tensorflow:2020-03-02 14:50:18.479932	metric_st_and_ts: 36.21564865112305
+INFO:tensorflow:2020-03-02 14:50:18.479932	weighted text norm: 0.07931999117136002
+INFO:tensorflow:2020-03-02 14:50:18.479932	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:50:18.479932	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:50:18.479932	data fetch (sec/step): 0.10
+INFO:tensorflow:2020-03-02 14:50:18.479932	train step (sec/step): 0.30
+----------- train step 000880 ---------------
+INFO:tensorflow:2020-03-02 14:50:24.528686	tst_walker_loss: 1.9483284950256348
+INFO:tensorflow:2020-03-02 14:50:24.528686	tst_visit_loss: 1.2767843008041382
+INFO:tensorflow:2020-03-02 14:50:24.528686	sts_walker_loss: 1.891465663909912
+INFO:tensorflow:2020-03-02 14:50:24.528686	sts_visit_loss: 1.231348991394043
+INFO:tensorflow:2020-03-02 14:50:24.528686	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:50:24.528686	total_loss: 60.08622741699219
+INFO:tensorflow:2020-03-02 14:50:24.528686	metric_tt: 15.710376739501953
+INFO:tensorflow:2020-03-02 14:50:24.528686	metric_st_and_ts: 36.572566986083984
+INFO:tensorflow:2020-03-02 14:50:24.528686	weighted text norm: 0.09284381568431854
+INFO:tensorflow:2020-03-02 14:50:24.528686	weighted shape norm: 0.01856149733066559
+INFO:tensorflow:2020-03-02 14:50:24.528686	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:50:24.528686	data fetch (sec/step): 0.09
+INFO:tensorflow:2020-03-02 14:50:24.528686	train step (sec/step): 0.30
+----------- train step 000900 ---------------
+INFO:tensorflow:2020-03-02 14:50:31.310540	tst_walker_loss: 1.9177836179733276
+INFO:tensorflow:2020-03-02 14:50:31.310540	tst_visit_loss: 1.2705661058425903
+INFO:tensorflow:2020-03-02 14:50:31.310540	sts_walker_loss: 1.7677088975906372
+INFO:tensorflow:2020-03-02 14:50:31.310540	sts_visit_loss: 1.243025302886963
+INFO:tensorflow:2020-03-02 14:50:31.310540	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:50:31.311538	total_loss: 59.25201416015625
+INFO:tensorflow:2020-03-02 14:50:31.311538	metric_tt: 15.631950378417969
+INFO:tensorflow:2020-03-02 14:50:31.311538	metric_st_and_ts: 35.9107780456543
+INFO:tensorflow:2020-03-02 14:50:31.311538	weighted text norm: 0.11171498894691467
+INFO:tensorflow:2020-03-02 14:50:31.311538	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:50:31.311538	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:50:31.311538	data fetch (sec/step): 0.11
+INFO:tensorflow:2020-03-02 14:50:31.311538	train step (sec/step): 0.34
+----------- train step 000920 ---------------
+INFO:tensorflow:2020-03-02 14:50:38.063352	tst_walker_loss: 1.9713752269744873
+INFO:tensorflow:2020-03-02 14:50:38.063352	tst_visit_loss: 1.308018445968628
+INFO:tensorflow:2020-03-02 14:50:38.063352	sts_walker_loss: 1.8738363981246948
+INFO:tensorflow:2020-03-02 14:50:38.063352	sts_visit_loss: 1.2723582983016968
+INFO:tensorflow:2020-03-02 14:50:38.063352	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:50:38.063352	total_loss: 59.33513259887695
+INFO:tensorflow:2020-03-02 14:50:38.063352	metric_tt: 15.580081939697266
+INFO:tensorflow:2020-03-02 14:50:38.063352	metric_st_and_ts: 35.891178131103516
+INFO:tensorflow:2020-03-02 14:50:38.063352	weighted text norm: 0.2605936527252197
+INFO:tensorflow:2020-03-02 14:50:38.063352	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:50:38.063352	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:50:38.063352	data fetch (sec/step): 0.11
+INFO:tensorflow:2020-03-02 14:50:38.063352	train step (sec/step): 0.34
+----------- train step 000940 ---------------
+INFO:tensorflow:2020-03-02 14:50:43.881603	tst_walker_loss: 1.6944704055786133
+INFO:tensorflow:2020-03-02 14:50:43.881603	tst_visit_loss: 1.2688971757888794
+INFO:tensorflow:2020-03-02 14:50:43.881603	sts_walker_loss: 1.6721088886260986
+INFO:tensorflow:2020-03-02 14:50:43.882601	sts_visit_loss: 1.2292993068695068
+INFO:tensorflow:2020-03-02 14:50:43.882601	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:50:43.882601	total_loss: 58.91730880737305
+INFO:tensorflow:2020-03-02 14:50:43.882601	metric_tt: 15.658848762512207
+INFO:tensorflow:2020-03-02 14:50:43.882601	metric_st_and_ts: 36.10026550292969
+INFO:tensorflow:2020-03-02 14:50:43.882601	weighted text norm: 0.056869104504585266
+INFO:tensorflow:2020-03-02 14:50:43.882601	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:50:43.882601	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:50:43.882601	data fetch (sec/step): 0.09
+INFO:tensorflow:2020-03-02 14:50:43.882601	train step (sec/step): 0.29
+----------- train step 000960 ---------------
+INFO:tensorflow:2020-03-02 14:50:50.359635	tst_walker_loss: 1.8710781335830688
+INFO:tensorflow:2020-03-02 14:50:50.360633	tst_visit_loss: 1.284346580505371
+INFO:tensorflow:2020-03-02 14:50:50.360633	sts_walker_loss: 1.7201814651489258
+INFO:tensorflow:2020-03-02 14:50:50.360633	sts_visit_loss: 1.2299884557724
+INFO:tensorflow:2020-03-02 14:50:50.360633	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:50:50.360633	total_loss: 58.922698974609375
+INFO:tensorflow:2020-03-02 14:50:50.360633	metric_tt: 15.636474609375
+INFO:tensorflow:2020-03-02 14:50:50.360633	metric_st_and_ts: 35.813682556152344
+INFO:tensorflow:2020-03-02 14:50:50.360633	weighted text norm: 0.0658196434378624
+INFO:tensorflow:2020-03-02 14:50:50.360633	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:50:50.360633	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:50:50.360633	data fetch (sec/step): 0.10
+INFO:tensorflow:2020-03-02 14:50:50.360633	train step (sec/step): 0.32
+----------- train step 000980 ---------------
+INFO:tensorflow:2020-03-02 14:50:56.260598	tst_walker_loss: 1.88311767578125
+INFO:tensorflow:2020-03-02 14:50:56.260598	tst_visit_loss: 1.300484538078308
+INFO:tensorflow:2020-03-02 14:50:56.261595	sts_walker_loss: 1.897904634475708
+INFO:tensorflow:2020-03-02 14:50:56.261595	sts_visit_loss: 1.2288652658462524
+INFO:tensorflow:2020-03-02 14:50:56.261595	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:50:56.261595	total_loss: 59.876441955566406
+INFO:tensorflow:2020-03-02 14:50:56.261595	metric_tt: 15.7711820602417
+INFO:tensorflow:2020-03-02 14:50:56.261595	metric_st_and_ts: 36.000728607177734
+INFO:tensorflow:2020-03-02 14:50:56.261595	weighted text norm: 0.12410419434309006
+INFO:tensorflow:2020-03-02 14:50:56.261595	weighted shape norm: 0.0012206649407744408
+INFO:tensorflow:2020-03-02 14:50:56.261595	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:50:56.261595	data fetch (sec/step): 0.09
+INFO:tensorflow:2020-03-02 14:50:56.261595	train step (sec/step): 0.29
+----------- train step 001000 ---------------
+INFO:tensorflow:2020-03-02 14:51:03.408012	tst_walker_loss: 1.8821393251419067
+INFO:tensorflow:2020-03-02 14:51:03.408012	tst_visit_loss: 1.2555537223815918
+INFO:tensorflow:2020-03-02 14:51:03.408012	sts_walker_loss: 1.6436505317687988
+INFO:tensorflow:2020-03-02 14:51:03.408012	sts_visit_loss: 1.2503043413162231
+INFO:tensorflow:2020-03-02 14:51:03.408012	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:51:03.408012	total_loss: 58.90568923950195
+INFO:tensorflow:2020-03-02 14:51:03.408012	metric_tt: 15.607250213623047
+INFO:tensorflow:2020-03-02 14:51:03.408012	metric_st_and_ts: 35.93093490600586
+INFO:tensorflow:2020-03-02 14:51:03.409010	weighted text norm: 0.10550495237112045
+INFO:tensorflow:2020-03-02 14:51:03.409010	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:51:03.409010	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:51:03.409010	data fetch (sec/step): 0.10
+INFO:tensorflow:2020-03-02 14:51:03.409010	train step (sec/step): 0.36
+----------- train step 001020 ---------------
+INFO:tensorflow:2020-03-02 14:51:09.422707	tst_walker_loss: 1.7304551601409912
+INFO:tensorflow:2020-03-02 14:51:09.422707	tst_visit_loss: 1.2859218120574951
+INFO:tensorflow:2020-03-02 14:51:09.422707	sts_walker_loss: 1.7716740369796753
+INFO:tensorflow:2020-03-02 14:51:09.422707	sts_visit_loss: 1.2364113330841064
+INFO:tensorflow:2020-03-02 14:51:09.422707	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:51:09.422707	total_loss: 58.45664978027344
+INFO:tensorflow:2020-03-02 14:51:09.422707	metric_tt: 15.566317558288574
+INFO:tensorflow:2020-03-02 14:51:09.422707	metric_st_and_ts: 35.59125518798828
+INFO:tensorflow:2020-03-02 14:51:09.422707	weighted text norm: 0.11306942254304886
+INFO:tensorflow:2020-03-02 14:51:09.422707	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:51:09.422707	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:51:09.422707	data fetch (sec/step): 0.09
+INFO:tensorflow:2020-03-02 14:51:09.422707	train step (sec/step): 0.30
+----------- train step 001040 ---------------
+INFO:tensorflow:2020-03-02 14:51:15.119188	tst_walker_loss: 1.6790719032287598
+INFO:tensorflow:2020-03-02 14:51:15.119188	tst_visit_loss: 1.3035167455673218
+INFO:tensorflow:2020-03-02 14:51:15.119188	sts_walker_loss: 1.8382420539855957
+INFO:tensorflow:2020-03-02 14:51:15.119188	sts_visit_loss: 1.2294447422027588
+INFO:tensorflow:2020-03-02 14:51:15.119188	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:51:15.119188	total_loss: 58.32272720336914
+INFO:tensorflow:2020-03-02 14:51:15.119188	metric_tt: 15.604925155639648
+INFO:tensorflow:2020-03-02 14:51:15.119188	metric_st_and_ts: 35.70634460449219
+INFO:tensorflow:2020-03-02 14:51:15.119188	weighted text norm: 0.15754476189613342
+INFO:tensorflow:2020-03-02 14:51:15.119188	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:51:15.119188	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:51:15.119188	data fetch (sec/step): 0.08
+INFO:tensorflow:2020-03-02 14:51:15.119188	train step (sec/step): 0.28
+----------- train step 001060 ---------------
+INFO:tensorflow:2020-03-02 14:51:21.087678	tst_walker_loss: 1.5968468189239502
+INFO:tensorflow:2020-03-02 14:51:21.087678	tst_visit_loss: 1.2927286624908447
+INFO:tensorflow:2020-03-02 14:51:21.087678	sts_walker_loss: 1.7893882989883423
+INFO:tensorflow:2020-03-02 14:51:21.087678	sts_visit_loss: 1.214544415473938
+INFO:tensorflow:2020-03-02 14:51:21.087678	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:51:21.087678	total_loss: 58.2393798828125
+INFO:tensorflow:2020-03-02 14:51:21.087678	metric_tt: 15.596617698669434
+INFO:tensorflow:2020-03-02 14:51:21.087678	metric_st_and_ts: 35.423011779785156
+INFO:tensorflow:2020-03-02 14:51:21.087678	weighted text norm: 0.08019380271434784
+INFO:tensorflow:2020-03-02 14:51:21.087678	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:51:21.087678	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:51:21.087678	data fetch (sec/step): 0.09
+INFO:tensorflow:2020-03-02 14:51:21.087678	train step (sec/step): 0.30
+----------- train step 001080 ---------------
+INFO:tensorflow:2020-03-02 14:51:27.965333	tst_walker_loss: 1.9507335424423218
+INFO:tensorflow:2020-03-02 14:51:27.965333	tst_visit_loss: 1.263400912284851
+INFO:tensorflow:2020-03-02 14:51:27.965333	sts_walker_loss: 1.7004351615905762
+INFO:tensorflow:2020-03-02 14:51:27.965333	sts_visit_loss: 1.2635469436645508
+INFO:tensorflow:2020-03-02 14:51:27.965333	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:51:27.965333	total_loss: 58.14006423950195
+INFO:tensorflow:2020-03-02 14:51:27.965333	metric_tt: 15.6672945022583
+INFO:tensorflow:2020-03-02 14:51:27.965333	metric_st_and_ts: 35.026432037353516
+INFO:tensorflow:2020-03-02 14:51:27.965333	weighted text norm: 0.11057057976722717
+INFO:tensorflow:2020-03-02 14:51:27.965333	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:51:27.965333	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:51:27.965333	data fetch (sec/step): 0.11
+INFO:tensorflow:2020-03-02 14:51:27.965333	train step (sec/step): 0.34
+----------- train step 001100 ---------------
+INFO:tensorflow:2020-03-02 14:51:34.321956	tst_walker_loss: 1.9457261562347412
+INFO:tensorflow:2020-03-02 14:51:34.321956	tst_visit_loss: 1.3360159397125244
+INFO:tensorflow:2020-03-02 14:51:34.321956	sts_walker_loss: 1.9987460374832153
+INFO:tensorflow:2020-03-02 14:51:34.321956	sts_visit_loss: 1.2396436929702759
+INFO:tensorflow:2020-03-02 14:51:34.321956	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:51:34.321956	total_loss: 58.870269775390625
+INFO:tensorflow:2020-03-02 14:51:34.321956	metric_tt: 15.718745231628418
+INFO:tensorflow:2020-03-02 14:51:34.321956	metric_st_and_ts: 35.41055679321289
+INFO:tensorflow:2020-03-02 14:51:34.321956	weighted text norm: 0.14073976874351501
+INFO:tensorflow:2020-03-02 14:51:34.321956	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:51:34.322953	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:51:34.322953	data fetch (sec/step): 0.10
+INFO:tensorflow:2020-03-02 14:51:34.322953	train step (sec/step): 0.32
+----------- train step 001120 ---------------
+INFO:tensorflow:2020-03-02 14:51:40.262527	tst_walker_loss: 1.8765002489089966
+INFO:tensorflow:2020-03-02 14:51:40.262527	tst_visit_loss: 1.3347454071044922
+INFO:tensorflow:2020-03-02 14:51:40.262527	sts_walker_loss: 2.0779008865356445
+INFO:tensorflow:2020-03-02 14:51:40.262527	sts_visit_loss: 1.2444504499435425
+INFO:tensorflow:2020-03-02 14:51:40.262527	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:51:40.262527	total_loss: 58.79998779296875
+INFO:tensorflow:2020-03-02 14:51:40.262527	metric_tt: 15.539061546325684
+INFO:tensorflow:2020-03-02 14:51:40.262527	metric_st_and_ts: 35.067142486572266
+INFO:tensorflow:2020-03-02 14:51:40.262527	weighted text norm: 0.1752769649028778
+INFO:tensorflow:2020-03-02 14:51:40.262527	weighted shape norm: 0.004710597917437553
+INFO:tensorflow:2020-03-02 14:51:40.262527	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:51:40.262527	data fetch (sec/step): 0.09
+INFO:tensorflow:2020-03-02 14:51:40.262527	train step (sec/step): 0.30
+----------- train step 001140 ---------------
+INFO:tensorflow:2020-03-02 14:51:46.290122	tst_walker_loss: 1.7352403402328491
+INFO:tensorflow:2020-03-02 14:51:46.290122	tst_visit_loss: 1.3003008365631104
+INFO:tensorflow:2020-03-02 14:51:46.290122	sts_walker_loss: 1.7538957595825195
+INFO:tensorflow:2020-03-02 14:51:46.290122	sts_visit_loss: 1.268287181854248
+INFO:tensorflow:2020-03-02 14:51:46.290122	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:51:46.291074	total_loss: 58.70597839355469
+INFO:tensorflow:2020-03-02 14:51:46.291084	metric_tt: 15.664409637451172
+INFO:tensorflow:2020-03-02 14:51:46.291084	metric_st_and_ts: 35.369136810302734
+INFO:tensorflow:2020-03-02 14:51:46.291084	weighted text norm: 0.06590862572193146
+INFO:tensorflow:2020-03-02 14:51:46.291084	weighted shape norm: 0.003946170676499605
+INFO:tensorflow:2020-03-02 14:51:46.291084	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:51:46.291084	data fetch (sec/step): 0.09
+INFO:tensorflow:2020-03-02 14:51:46.291084	train step (sec/step): 0.30
+----------- train step 001160 ---------------
+INFO:tensorflow:2020-03-02 14:51:52.251656	tst_walker_loss: 1.786600947380066
+INFO:tensorflow:2020-03-02 14:51:52.252653	tst_visit_loss: 1.3374953269958496
+INFO:tensorflow:2020-03-02 14:51:52.252653	sts_walker_loss: 1.9871344566345215
+INFO:tensorflow:2020-03-02 14:51:52.252653	sts_visit_loss: 1.2456212043762207
+INFO:tensorflow:2020-03-02 14:51:52.252653	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:51:52.252653	total_loss: 58.80371856689453
+INFO:tensorflow:2020-03-02 14:51:52.252653	metric_tt: 15.60326862335205
+INFO:tensorflow:2020-03-02 14:51:52.252653	metric_st_and_ts: 35.110374450683594
+INFO:tensorflow:2020-03-02 14:51:52.252653	weighted text norm: 0.08179640024900436
+INFO:tensorflow:2020-03-02 14:51:52.252653	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:51:52.252653	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:51:52.252653	data fetch (sec/step): 0.09
+INFO:tensorflow:2020-03-02 14:51:52.252653	train step (sec/step): 0.30
+----------- train step 001180 ---------------
+INFO:tensorflow:2020-03-02 14:51:57.138460	tst_walker_loss: 1.9986076354980469
+INFO:tensorflow:2020-03-02 14:51:57.138460	tst_visit_loss: 1.318676233291626
+INFO:tensorflow:2020-03-02 14:51:57.138460	sts_walker_loss: 1.889694333076477
+INFO:tensorflow:2020-03-02 14:51:57.138460	sts_visit_loss: 1.2506197690963745
+INFO:tensorflow:2020-03-02 14:51:57.138460	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:51:57.138460	total_loss: 59.22100067138672
+INFO:tensorflow:2020-03-02 14:51:57.138460	metric_tt: 15.671318054199219
+INFO:tensorflow:2020-03-02 14:51:57.138460	metric_st_and_ts: 35.25947952270508
+INFO:tensorflow:2020-03-02 14:51:57.138460	weighted text norm: 0.08526717871427536
+INFO:tensorflow:2020-03-02 14:51:57.138460	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:51:57.138460	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:51:57.138460	data fetch (sec/step): 0.07
+INFO:tensorflow:2020-03-02 14:51:57.138460	train step (sec/step): 0.24
+----------- train step 001200 ---------------
+INFO:tensorflow:2020-03-02 14:52:01.925157	tst_walker_loss: 1.7732369899749756
+INFO:tensorflow:2020-03-02 14:52:01.926154	tst_visit_loss: 1.2954282760620117
+INFO:tensorflow:2020-03-02 14:52:01.926154	sts_walker_loss: 1.8613688945770264
+INFO:tensorflow:2020-03-02 14:52:01.926154	sts_visit_loss: 1.2313133478164673
+INFO:tensorflow:2020-03-02 14:52:01.926154	classification_loss after weighting: 0.0
+INFO:tensorflow:2020-03-02 14:52:01.926154	total_loss: 58.249794006347656
+INFO:tensorflow:2020-03-02 14:52:01.926154	metric_tt: 15.627934455871582
+INFO:tensorflow:2020-03-02 14:52:01.926154	metric_st_and_ts: 35.104000091552734
+INFO:tensorflow:2020-03-02 14:52:01.926154	weighted text norm: 0.03684656322002411
+INFO:tensorflow:2020-03-02 14:52:01.926154	weighted shape norm: 0.0
+INFO:tensorflow:2020-03-02 14:52:01.926154	queue size: 20/20
+INFO:tensorflow:2020-03-02 14:52:01.926154	data fetch (sec/step): 0.07
+INFO:tensorflow:2020-03-02 14:52:01.926154	train step (sec/step): 0.24
+Signal processes to shut down.
+Emptying queue.
+Killing processes.
+Signal processes to shut down.
+Emptying queue.
+Killing processes.

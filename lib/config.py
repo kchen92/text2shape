@@ -18,7 +18,7 @@ cfg = __C
 # #
 
 __C.CONST = edict()
-__C.CONST.DATASET = 'primitives'  # (shapenet, primitives) - can be modified by command line
+__C.CONST.DATASET = 'shapenet'  # (shapenet, primitives) - can be modified by command line
 __C.CONST.IMPROVED_WGAN = False
 __C.CONST.SHAPENET_CT_CLASSIFIER = False
 __C.CONST.SYNTH_EMBEDDING = False
@@ -42,7 +42,7 @@ __C.VAL_NETWORK = 'Classifier128'
 #
 __C.DIR = edict()
 # Path where taxonomy.json is stored
-__C.DIR.RGB_VOXEL_PATH = r'C:\Users\kohei\minerva_ai\text2shape\text2shape-data\shapenet\nrrd_256_filter_div_128_solid\%s\%s.nrrd'  # TODO: Modify this
+__C.DIR.RGB_VOXEL_PATH = r'C:\Users\kohei\minerva_ai\text2shape\text2shape-data\shapenet\nrrd_256_filter_div_32_solid\%s\%s.nrrd'  # TODO: Modify this
 __C.DIR.LOG_PATH = './output/default'
 __C.DIR.CKPT_PATH = None
 __C.DIR.VAL_CKPT_PATH = None
