@@ -1,2 +1,3 @@
 text2shape-data
 outputs/shapenet/encoder_logdir
+outputs/primitives/encoder_logdir
