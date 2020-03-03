@@ -474,6 +474,7 @@ def main():
             # multiple processes to speed up the loading. For validation data, use 1
             # since the queue will be popped every TRAIN.NUM_VALIDATION_ITERATIONS.
             # set up data queue and start enqueue
+            args.validation = False
             np.random.seed(123)
             data_process_class = models.get_data_process_pairs(cfg.NETWORK, is_training)
             val_data_process_class = models.get_data_process_pairs(cfg.NETWORK, is_training=False)
@@ -496,6 +497,7 @@ def main():
 
             # Create solver
             solver = get_solver(g, net, args, is_training)
+
 
             # Run solver
             if is_training:
